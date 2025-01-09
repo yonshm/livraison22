@@ -1,0 +1,3 @@
+<div>
+    {{! empty($user)}}
+</div>

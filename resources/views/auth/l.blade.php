@@ -1,3 +1,4 @@
 <div>
-{{$data}}
+{{$user}}
+{{$user->role->nom_role}}
 </div>

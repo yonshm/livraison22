@@ -17,4 +17,7 @@ class Utilisateur extends Model
     function ville(){
         return $this->belongsTo(Ville::class, 'local');
     }
+    function role(){
+        return $this->belongsTo(Role::class, 'id_role');
+    }
 }

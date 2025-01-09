@@ -11,10 +11,14 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($user)
     {
-        $clients = Utilisateur::with('client')->with('banque')->get();
-        return view('clients.index',compact('clients'));
+        $clients = Utilisateur::with('client')->with('banque')->find($user);
+        if (!empty($clients) and $clients->id != 0){
+            return view('clients.index',compact('clients'));
+        }else{
+            return redirect()->route('auth.login');
+        }
     }
     
     /**

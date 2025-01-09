@@ -10,9 +10,15 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($user)
     {
-        //
+        $user = Utilisateur::with('client')->with('role')->find(8);
+        if(!empty($user) and $user->id != 0){
+
+            return view('admins.index', compact('user'));
+        }else{
+            return redirect()->route('auth.login');
+        }
     }
 
     public function showClients()
