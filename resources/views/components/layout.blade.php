@@ -11,7 +11,12 @@
     <title>Project Livraison</title>
 </head>
 <body>
-    {{ $slot }}
+
+    @include('layout.nav')
+    <main>
+        {{-- @yield('layout.') --}}
+    </main>
+    {{-- {{ $slot }} --}}
 
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"> </script>
 </body>

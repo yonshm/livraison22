@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ColiController;
-use App\Http\Controllers\UtilisateurController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ColiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\VilleController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\UtilisateurController;
+use App\Http\Controllers\ZoneController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,9 +29,25 @@ Route::put('/client/update/{id}', [ClientController::class, 'update'])->name('cl
 Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 // End Route Clients :::::::::::::::::::::::::::::::::
 
+// Start Route Ville ::::::::::::::::::::::::::::::::
+Route::get('/admin/villes', [VilleController::class, 'index'])->name('villes.index');
+Route::post('/admin/villes', [VilleController::class, 'store'])->name('villes.store');
+Route::get('/admin/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
+Route::put('/admin/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
+Route::delete('/admin/villes/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
+// End Route Ville ::::::::::::::::::::::::::::::::
+
+// Start Route Zone ::::::::::::::::::::::::::::::::
+Route::get('/admin/zones', [ZoneController::class, 'index'])->name('zones.index');
+Route::post('/admin/zones', [ZoneController::class, 'store'])->name('zones.store');
+Route::get('/admin/zones/edit/{id}', [ZoneController::class, 'edit'])->name('zones.edit');
+Route::put('/admin/zones/update/{id}', [ZoneController::class, 'update'])->name('zones.update');
+Route::delete('/admin/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
+// End Route Zone ::::::::::::::::::::::::::::::::
+
 // Start Route Admin ::::::::::::::::::::::::::::::::
 
-Route::get('/admin/{user}', [AdminController::class, 'index'])->name('admins.index');
+Route::get('/admin', [AdminController::class, 'index'])->name('admins.index');
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admins.create');
 Route::post('/admin', [AdminController::class, 'store'])->name('admins.store');
 Route::get('/admin/{id}', [AdminController::class, 'show'])->name('admins.show');

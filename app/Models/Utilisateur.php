@@ -12,12 +12,12 @@ class Utilisateur extends Model
         return $this->hasOne(Client::class, 'id_utilisateur');
     }
     function banque(){
-        return $this->belongsTo(Banque::class, 'id_banque');
+        return $this->hasMany(Banque::class, 'id_banque');
     }
     function ville(){
-        return $this->belongsTo(Ville::class, 'local');
+        return $this->hasMany(Ville::class, 'local');
     }
     function role(){
-        return $this->belongsTo(Role::class, 'id_role');
+        return $this->hasMany(Role::class, 'id_role');
     }
 }

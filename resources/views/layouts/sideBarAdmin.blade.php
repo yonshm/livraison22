@@ -1,39 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <link href="{{ asset('css/global_styles.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <title>Project Livraison</title>
-    
-</head>
-<body>
-    <!-- Nav -->
-    <nav class="navbar">
-        <img src="https://fakeimg.pl/250x50/" alt="logo">
-        <!-- links -->
-        <ul class="links">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          <li id="icon-profile">
-              <img src="https://fakeimg.pl/250x250/" alt="profile">
-          </li>
-        </ul>
-        <!-- menu bar -->
-        <div id="menu-bar">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-      <div class="home">
         <div id="sidebar" class="sidebar">
+            <div class="d-flex align-items-stretch">
+              <div class="card w-100">
+                <div class="card-body p-0">
+                  <div class="mb-4">
+                    <h4 class="card-title mb-0">Menu</h4>
+                  </div>
+                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                    {{-- Start Row --}}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          Parametres
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" style="">
+                          <ul class="accordion-body py-0">
+                            <li><a href="{{route('villes.index')}}">villes</a></li>
+                            <li><a href="{{route('zones.index')}}">zones</a></li>
+                            <li><a href="{{route('villes.index')}}">options</a></li>
+                            <li><a href="{{route('villes.index')}}">SMS</a></li>
+                            <li><a href="{{route('villes.index')}}">E-mail</a></li>
+                          </ul>
+                      </div>
+                    </div>
+                    {{-- End Row --}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           <!-- Colis :::: -->
-          <div class="part">
+          {{-- <div class="part">
             <h6>Colis</h6>
             <div class="item">
               <span>1 - Colis</span>
@@ -83,24 +81,8 @@
             <div class="item">
               <span>2 - Supports</span>
             </div>
-          </div>
-        </div>
-          <div class="main">
-              <div class="card right-side">
-                  {{$slot}}
-              </div>
-          </div>
-      </div>
+          </div> --}}
 
-    <script src="{{asset('js/bootstrap.bundle.min.js')}}"> </script>
-      <script>
-        const menu_bar = document.getElementById("menu-bar");
-        const sidebar = document.getElementById("sidebar");
-        menu_bar.addEventListener("click", () => {
-          sidebar.classList.toggle("show");
-          menu_bar.classList.toggle("close");
-        });
-        </script>
-  
-</body>
-</html>
+</div>
+
+

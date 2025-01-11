@@ -12,9 +12,9 @@ class Coli extends Model
                     'coli_type','commentaire'];
 
     function ville(){
-        return $this->belongsTo(Ville::class, 'id_ville');
+        return $this->hasMany(Ville::class, 'id_ville');
     }
     public function business(){
-        return $this->belongsTo(Business::class, 'id_business');
+        return $this->hasMany(Business::class, 'id_business');
     }
 }
