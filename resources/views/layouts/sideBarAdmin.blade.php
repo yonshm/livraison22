@@ -9,12 +9,32 @@
                     {{-- Start Row --}}
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                          Utilisateur
+                        </button>
+                      </h2>
+                      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample" style="">
+                        <ul class="accordion-body py-0">
+                            <li><a href="{{route('villes.index')}}">touts</a></li>
+                            <li><a href="{{route('zones.index')}}">Client</a></li>
+                            <li><a href="{{route('villes.index')}}">Moderateur</a></li>
+                            <li><a href="{{route('villes.index')}}">Liverur</a></li>
+                            <li><a href="{{route('villes.index')}}">Aministrateur</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    {{-- End Row --}}
+
+                    {{-- Start Row --}}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="flush-headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                           Parametres
                         </button>
                       </h2>
                       <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" style="">
                           <ul class="accordion-body py-0">
+                            <li><a href="{{route('general.index')}}">general</a></li>
                             <li><a href="{{route('villes.index')}}">villes</a></li>
                             <li><a href="{{route('zones.index')}}">zones</a></li>
                             <li><a href="{{route('villes.index')}}">options</a></li>

@@ -84,16 +84,15 @@ class VilleController extends Controller
                 'frais_retour' => 'required|numeric|min:0',
                 'frais_refus' => 'required|numeric|min:0',
             ]);
-            $ville = Ville::find($is);
+            $ville = Ville::find($id);
             $ville->update($request->all());
-            return redirect()->route('villes.index',['message' => 'Ville successfully updated!'], 201);
+            return redirect()->route('villes.index');
         }catch(Exception $err){
             return response()->json([
-            'error' => 'Failed to create Ville',
+            'error' => 'Failed to update Ville',
             'message' => $err->getMessage(),
             ], 500);
         }
-        //
     }
 
     /**

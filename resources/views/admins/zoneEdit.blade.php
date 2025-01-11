@@ -38,10 +38,13 @@
         </div>
         <div class="col-12">
         <div class="d-md-flex align-items-center">
-            <div class="ms-auto mt-3 mt-md-0">
-            <button type="submit" class="btn btn-success hstack gap-6">
-                Modifier
-            </button>
+            <div class="d-flex gap-6 ms-auto mt-3 mt-md-0">
+                <a href="{{route('zones.index')}}" type="reset" class="btn bg-danger-subtle text-danger hstack gap-6">
+                    Annuler
+                </a>
+                <button type="submit" class="btn btn-success hstack gap-6">
+                    Modifier
+                </button>
             </div>
         </div>
         </div>

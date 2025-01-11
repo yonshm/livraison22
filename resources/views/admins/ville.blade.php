@@ -11,7 +11,7 @@
         transition: 1s;
         visibility: hidden;
     }
-    .showFtom{
+    .showForm{
         top: 50 !important;
         visibility: visible !important;
     }
@@ -155,10 +155,13 @@
         </div>
         <div class="col-12">
         <div class="d-md-flex align-items-center">
-            <div class="ms-auto mt-3 mt-md-0">
-            <button type="submit" class="btn btn-primary hstack gap-6">
-                Ajouter
-            </button>
+           <div class="d-flex gap-6 ms-auto mt-3 mt-md-0">
+                <button id="annuler" type="reset" class="btn bg-danger-subtle text-danger hstack gap-6">
+                    Annuler
+                </button>
+                <button type="submit" class="btn btn-primary hstack gap-6">
+                    Ajouter
+                </button>
             </div>
         </div>
         </div>
@@ -166,9 +169,13 @@
 </form>
     <script>
         const ajouterVille = document.getElementById('ajouterVille');
+        const annuler = document.getElementById('annuler');
         const formAjouterVille = document.getElementById('formAjouterVille');
         ajouterVille.addEventListener('click', () => {
-           formAjouterVille.classList.add('showFtom')
+           formAjouterVille.classList.add('showForm')
+        })
+        annuler.addEventListener('click', () => {
+           formAjouterVille.classList.remove('showForm')
         })
         formAjouterVille.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -191,27 +198,28 @@
             fraisRe.classList.remove('is-invalid');
             fraisR.classList.remove('is-invalid');
             slcZone.classList.remove('is-invalid');
+            let is_valid = true;
             if (!ref.value) {
                 ref.classList.add('is-invalid');
-                return false;
+                is_valid = false;
             }if(!nomVille.value){
                 nomVille.classList.add('is-invalid');
-                return false;
+                is_valid = false;
             }if (isNaN(fraisL.value) || fraisL.value < 0) {
                 fraisL.classList.add('is-invalid');
-                return false;
+                is_valid = false;
             }if (isNaN(fraisRe.value) || fraisRe.value < 0) {
                 fraisRe.classList.add('is-invalid');
-                return false;
+                is_valid = false;
             }if (isNaN(fraisR.value) || fraisR.value < 0) {
                 fraisR.classList.add('is-invalid');
-                return false;
+                is_valid = false;
             }if(isNaN(slcZone.value || slcZone.value <= 0)){
                 slcZone.classList.add('is-invalid')
-                return false;
+                is_valid = false;
             }
 
-            return true;
+            return is_valid;
         }
 
 

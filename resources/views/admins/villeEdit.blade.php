@@ -72,10 +72,13 @@
         </div>
         <div class="col-12">
         <div class="d-md-flex align-items-center">
-            <div class="ms-auto mt-3 mt-md-0">
-            <button type="submit" class="btn btn-primary hstack gap-6">
-                Modifier
-            </button>
+            <div class="d-flex gap-6 ms-auto mt-3 mt-md-0">
+                <a href="{{route('villes.index')}}" type="reset" class="btn bg-danger-subtle text-danger hstack gap-6">
+                    Annuler
+                </a>
+                <button type="submit" class="btn btn-success hstack gap-6">
+                    Modifier
+                </button>
             </div>
         </div>
         </div>
@@ -83,11 +86,7 @@
 </form>
 </div>
     <script>
-        const ajouterVille = document.getElementById('ajouterVille');
-        const formAjouterVille = document.getElementById('formAjouterVille');
-        ajouterVille.addEventListener('click', () => {
-           formAjouterVille.classList.add('showFtom')
-        })
+        
         formAjouterVille.addEventListener('submit', function (event) {
             event.preventDefault();
             if (dataValid()){
@@ -109,27 +108,33 @@
             fraisRe.classList.remove('is-invalid');
             fraisR.classList.remove('is-invalid');
             slcZone.classList.remove('is-invalid');
+            let is_valid = true;
             if (!ref.value) {
                 ref.classList.add('is-invalid');
-                return false;
-            }if(!nomVille.value){
+                is_valid = false;
+            }
+            if(!nomVille.value){
                 nomVille.classList.add('is-invalid');
-                return false;
-            }if (isNaN(fraisL.value) || fraisL.value < 0) {
+                is_valid = false;
+            }
+            if (isNaN(fraisL.value) || fraisL.value < 0) {
                 fraisL.classList.add('is-invalid');
-                return false;
-            }if (isNaN(fraisRe.value) || fraisRe.value < 0) {
+                is_valid = false;
+            }
+            if (isNaN(fraisRe.value) || fraisRe.value < 0) {
                 fraisRe.classList.add('is-invalid');
-                return false;
-            }if (isNaN(fraisR.value) || fraisR.value < 0) {
+                is_valid = false;
+            }
+            if (isNaN(fraisR.value) || fraisR.value < 0) {
                 fraisR.classList.add('is-invalid');
-                return false;
-            }if(isNaN(slcZone.value || slcZone.value <= 0)){
+                is_valid = false;
+            }
+            if(isNaN(slcZone.value || slcZone.value <= 0)){
                 slcZone.classList.add('is-invalid')
-                return false;
+                is_valid = false;
             }
 
-            return true;
+            return is_valid;
         }
 
 

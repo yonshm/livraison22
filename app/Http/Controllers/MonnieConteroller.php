@@ -2,30 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\General;
-use App\Models\Utilisateur;
+use App\Models\Monnie;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
-class AdminController extends Controller
+class MonnieConteroller extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $user = Utilisateur::with('client')->with('role')->find(8);
-        return view('admins.index');
-
+        $monnies = Monnie::all();
+        
     }
-
-    public function showClients()
-    {
-        $clients = Utilisateur::with('client')->with('banque')->with('ville')->get();
-        return view('admins.showClients',compact('clients'));
-        // return view();
-    }
-
 
     /**
      * Show the form for creating a new resource.

@@ -6,6 +6,7 @@ use App\Http\Controllers\ColiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VilleController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\GeneralConteroller;
 use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\ZoneController;
 
@@ -29,35 +30,45 @@ Route::put('/client/update/{id}', [ClientController::class, 'update'])->name('cl
 Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 // End Route Clients :::::::::::::::::::::::::::::::::
 
-// Start Route Ville ::::::::::::::::::::::::::::::::
-Route::get('/admin/villes', [VilleController::class, 'index'])->name('villes.index');
-Route::post('/admin/villes', [VilleController::class, 'store'])->name('villes.store');
-Route::get('/admin/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
-Route::put('/admin/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
-Route::delete('/admin/villes/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
-// End Route Ville ::::::::::::::::::::::::::::::::
+Route::prefix('admin')->group(function () {
 
-// Start Route Zone ::::::::::::::::::::::::::::::::
-Route::get('/admin/zones', [ZoneController::class, 'index'])->name('zones.index');
-Route::post('/admin/zones', [ZoneController::class, 'store'])->name('zones.store');
-Route::get('/admin/zones/edit/{id}', [ZoneController::class, 'edit'])->name('zones.edit');
-Route::put('/admin/zones/update/{id}', [ZoneController::class, 'update'])->name('zones.update');
-Route::delete('/admin/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
-// End Route Zone ::::::::::::::::::::::::::::::::
+    // Start Route Ville ::::::::::::::::::::::::::::::::
+    Route::get('/villes', [VilleController::class, 'index'])->name('villes.index');
+    Route::post('/villes', [VilleController::class, 'store'])->name('villes.store');
+    Route::get('/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
+    Route::put('/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
+    Route::delete('/villes/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
+    // End Route Ville ::::::::::::::::::::::::::::::::
+    
+    // Start Route Zone ::::::::::::::::::::::::::::::::
+    Route::get('/zones', [ZoneController::class, 'index'])->name('zones.index');
+    Route::post('/zones', [ZoneController::class, 'store'])->name('zones.store');
+    Route::get('/zones/edit/{id}', [ZoneController::class, 'edit'])->name('zones.edit');
+    Route::put('/zones/update/{id}', [ZoneController::class, 'update'])->name('zones.update');
+    Route::delete('/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
+    // End Route Zone ::::::::::::::::::::::::::::::::
+    
+    // Start Route General ::::::::::::::::::::::::::::::::
 
-// Start Route Admin ::::::::::::::::::::::::::::::::
+    Route::get('/general', [GeneralConteroller::class, 'index'])->name('general.index');
+    Route::put('/general/update/{id}', [GeneralConteroller::class, 'update'])->name('general.update');
 
-Route::get('/admin', [AdminController::class, 'index'])->name('admins.index');
-Route::get('/admin/create', [AdminController::class, 'create'])->name('admins.create');
-Route::post('/admin', [AdminController::class, 'store'])->name('admins.store');
-Route::get('/admin/{id}', [AdminController::class, 'show'])->name('admins.show');
-Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admins.edit');
-Route::put('/admin/update/{id}', [AdminController::class, 'update'])->name('admins.update');
-Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admins.destroy');
+    // Start Route General ::::::::::::::::::::::::::::::::
+    // Start Route Admin ::::::::::::::::::::::::::::::::
+    
+    Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+    Route::get('/create', [AdminController::class, 'create'])->name('admins.create');
+    Route::post('/', [AdminController::class, 'store'])->name('admins.store');
+    Route::get('/{id}', [AdminController::class, 'show'])->name('admins.show');
+    Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admins.edit');
+    Route::put('/update/{id}', [AdminController::class, 'update'])->name('admins.update');
+    Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admins.destroy');
 
-Route::get('/admin/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
-Route::get('/admin/clients/t', [AdminController::class, 'test'])->name('admins.test');
 
+Route::get('/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
+Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
+
+});
 // End Route Admin ::::::::::::::::::::::::::::::::
 
 
