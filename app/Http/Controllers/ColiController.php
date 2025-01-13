@@ -20,17 +20,17 @@ class ColiController extends Controller
     }
     public function indexByClient()
     {
-        $colis = Coli::where('id_client',4)->with('ville')->with('business')->get();   
+        $colis = Coli::where('id_client',4)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
         return view('colis.indexByClient',compact('colis'));
     }
     public function colisAttenderRamassage()
     {
-        $colis = Coli::where('id_client',4)->with('ville')->with('business')->get();       
+        $colis = Coli::where('id_client',4)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
         return view('colis.colisAttenderRamassage',compact('colis'));
     }
     public function colisNonExpedies()
     {
-        $colis = Coli::where('id_client',4)->with('ville')->with('business')->get();       
+        $colis = Coli::where('id_client',4)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();     
         return view('colis.colisNonExpedies',compact('colis'));
     }
 

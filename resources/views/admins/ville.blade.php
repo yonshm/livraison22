@@ -101,6 +101,7 @@
                     
                   </table>
                 </div>
+                    {{ $villes->links('pagination::bootstrap-5') }}
               </div>       
             </div>
         </div>

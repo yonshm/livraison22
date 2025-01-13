@@ -9,7 +9,7 @@
           <div class="card-body p-3">
             <div class="table-responsive border rounded">
       
-            <table class="table align-middle text-nowrap mb-0">
+              <table class="table align-middle text-nowrap mb-0">
                     <thead>
                       <tr class="text-center">
                           <th scope="col">#</th>

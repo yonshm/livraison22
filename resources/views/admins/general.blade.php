@@ -9,7 +9,7 @@
     <div class="main">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title mb-3">Multiple Input With Default Label</h4>
+              <h4 class="card-title mb-3">Information General</h4>
               <form id="globalForm" action="{{route('general.update', $general->id)}}" method="POST">
                 @method('PUT')
                 @csrf

@@ -14,7 +14,7 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        $zoneWithVille = Zone::with('ville')->orderBy('nom_zone')->get();
+        $zoneWithVille = Zone::with('ville')->orderBy('nom_zone')->paginate(5);
         // dd($zoneWithVille);
         return view('admins.zone', compact('zoneWithVille'));
     }

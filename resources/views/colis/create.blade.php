@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                         <label class="form-label">Ville</label>
-                        <select class="form-select" name="id_ville" aria-label="Default select example">
+                        <select id="slc-ville" class="form-select" name="id_ville" aria-label="Default select example">
                             <option selected="">Ville</option>
                             @foreach ($villes as $ville)
                                 <option value="{{$ville->id}}">{{$ville->nom_ville}}</option>
@@ -134,18 +134,44 @@
                 <div class="d-flex align-items-center justify-content-between mt-2">
                     <div class="mb-3">
                         <label for="inputAdresse" class="form-label">Frais de livraison: </label>
-                        <span id="fraisLivraison">00.00 DH</span>
+                        <span>
+                            <span id="fraisLivraison">00.00</span> DH
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="inputAdresse" class="form-label">Frais de retour: </label>
-                        <span id="fraisRetour">00.00 DH</span>
+                        <span>
+                            <span id="fraisRetour">00.00</span> DH
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="inputAdresse" class="form-label">Frais de refus: </label>
-                        <span id="fraisRefus">00.00 DH</span>
+                        <span>
+                            <span id="fraisRefus">00.00</span> DH
+                        </span>
                     </div>
                 </div>
             </form>
         </div>        
     </div>
+
+    <script>
+        const slc_ville = document.getElementById('slc-ville');
+        const fraisLivraison = document.getElementById('fraisLivraison');
+        const fraisRetour = document.getElementById('fraisRetour');
+        const fraisRefus = document.getElementById('fraisRefus');
+
+        slc_ville.addEventListener('change', () => {
+            const id = slc_ville.value;
+            fetch('/admin/villes/'+id)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                fraisLivraison.innerText = `${data[0].frais_livraison}.00`;
+                fraisRetour.innerText = `${data[0].frais_retour}.00`;
+                fraisRefus.innerText = `${data[0].frais_refus}.00`;
+            })
+            .catch(err => {console.error(err)})
+        })
+    </script>
 </x-clientL>

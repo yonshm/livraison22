@@ -8,18 +8,50 @@
                   <div class="accordion accordion-flush" id="accordionFlushExample">
                     {{-- Start Row --}}
                     <div class="accordion-item">
-                      <h2 class="accordion-header" id="flush-headingOne">
+                      <h2 class="accordion-header" id="flush-headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                          Colis
+                        </button>
+                      </h2>
+                      <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample" style="">
+                        <ul class="accordion-body py-0">
+                            <li><a href="{{route('colis.create')}}">Nouveau Colis</a></li>
+                            <li><a href="">Liste Colis</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    {{-- End Row --}}
+                    {{-- Start Row --}}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="flush-headingTree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTree" aria-expanded="false" aria-controls="flush-collapseTree">
+                          Gestion de stock
+                        </button>
+                      </h2>
+                      <div id="flush-collapseTree" class="accordion-collapse collapse" aria-labelledby="flush-headingTree" data-bs-parent="#accordionFlushExample" style="">
+                        <ul class="accordion-body py-0">
+                            <li><a href="">Nouveau Colis</a></li>
+                            <li><a href="">Pret pour la preparation</a></li>
+                            <li><a href="">Bon de livraion (Stock)</a></li>
+                            <li><a href="{{route('produit.inventory',1)}}">Inventory</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    {{-- End Row --}}
+                    {{-- Start Row --}}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="flush-headingTwo">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                           Utilisateur
                         </button>
                       </h2>
                       <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample" style="">
                         <ul class="accordion-body py-0">
-                            <li><a href="{{route('villes.index')}}">touts</a></li>
-                            <li><a href="{{route('zones.index')}}">Client</a></li>
-                            <li><a href="{{route('villes.index')}}">Moderateur</a></li>
-                            <li><a href="{{route('villes.index')}}">Liverur</a></li>
-                            <li><a href="{{route('villes.index')}}">Aministrateur</a></li>
+                            <li><a href="{{route('utilisateur.index')}}">touts</a></li>
+                            <li><a href="{{route('utilisateur.role','client')}}">Client</a></li>
+                            <li><a href="{{route('utilisateur.role','moderateur')}}">Moderateur</a></li>
+                            <li><a href="{{route('utilisateur.role','liverur')}}">Liverur</a></li>
+                            <li><a href="{{route('utilisateur.role','admin')}}">Administrateur</a></li>
                           </ul>
                         </div>
                       </div>
@@ -48,61 +80,6 @@
                 </div>
               </div>
             </div>
-
-
-          <!-- Colis :::: -->
-          {{-- <div class="part">
-            <h6>Colis</h6>
-            <div class="item">
-              <span>1 - Colis</span>
-              <ul>
-                <li><a href="{{route('colis.create')}}">nouveau coli </a></li>
-                <li><a href="{{route('colis.indexByClient')}}">liste colis </a></li>
-                <li><a href="{{route('colis.colisAttenderRamassage')}}">colis pour ramasage </a></li>
-                <li><a href="{{route('colis.colisNonExpedies')}}">colis non expedies </a></li>
-              </ul>
-            </div>
-            <div class="item">
-              <span>2 - Gestion d'inventaire</span>
-              <ul>
-                <li><a href="#">Ajouter Produit </a></li>
-                <li><a href="#">Inventaire </a></li>
-              </ul>
-            </div>
-          </div>
-  
-          <!-- Bons Et Factures :::: -->
-          <div class="part">
-            <h6>Bons Et Factures</h6>
-            <div class="item">
-              <span>1 - Bons de ramassage</span>
-              <ul>
-                <li><a href="#">liste bons de ramassage </a></li>
-                <li><a href="#">ajouter bon de ramassage </a></li>
-              </ul>
-            </div>
-            <div class="item">
-              <span>2 - Bons de retour</span>
-              <ul>
-                <li><a href="#">liste bons de retour </a></li>
-                <li><a href="#">ajouter bon de retour </a></li>
-              </ul>
-            </div>
-            <div class="item">
-              <span>3 - Liste Factures</span>
-            </div>
-          </div>
-          <!-- Utilite -->
-          <div class="part">
-            <h6>Utilite</h6>
-            <div class="item">
-              <span>1 - utilisateurs</span>
-            </div>
-            <div class="item">
-              <span>2 - Supports</span>
-            </div>
-          </div> --}}
-
 </div>
 
 

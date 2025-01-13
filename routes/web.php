@@ -4,11 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColiController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Bon_ramassageController;
 use App\Http\Controllers\VilleController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\GeneralConteroller;
 use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\ZoneController;
+use App\Models\Produit;
+use App\Http\Controllers\ProduitController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,20 +23,47 @@ Route::get('/', function () {
 // Route::get('/clients/{id}', function () {
 //     return view('clients.show');
 // });
+Route::prefix('client')->group(function () {
+    
+    Route::get('/{user}', [ClientController::class, 'index'])->name('clients.index');
+    Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
+    Route::post('/', [ClientController::class, 'store'])->name('clients.store');
+    // Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
+    Route::get('/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
+    Route::put('/update/{id}', [ClientController::class, 'update'])->name('clients.update');
+    Route::delete('/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
-Route::get('/client/{user}', [ClientController::class, 'index'])->name('clients.index');
-Route::get('/client/create', [ClientController::class, 'create'])->name('clients.create');
-Route::post('/client', [ClientController::class, 'store'])->name('clients.store');
-// Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
-Route::get('/client/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
-Route::put('/client/update/{id}', [ClientController::class, 'update'])->name('clients.update');
-Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
+    // Route Bon_Ramassage :::::::::::::::::
+    Route::get('/bon/ramassage', [Bon_ramassageController::class, 'index'])->name('bon_ramassage.index');
+    Route::get('/bon/ramassage/create', [Bon_ramassageController::class, 'create'])->name('bon_ramassage.create');
+    Route::post('/bon/ramassage', [Bon_ramassageController::class, 'store'])->name('bon_ramassage.store');
+    Route::delete('/bon/ramassage/{id}', [Bon_ramassageController::class, 'destroy'])->name('bon_ramassage.destroy');
+});
 // End Route Clients :::::::::::::::::::::::::::::::::
 
 Route::prefix('admin')->group(function () {
 
+    /// utilisateur Link ::::::::::::::::::::::::::
+    Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur.index');
+    Route::get('/utilisateur/create', [UtilisateurController::class, 'create'])->name('utilisateur.create');
+    Route::post('/utilisateur', [UtilisateurController::class, 'store'])->name('utilisateur.store');
+    Route::get('/utilisateur/edit/{id}', [UtilisateurController::class, 'edit'])->name('utilisateur.edit');
+    Route::get('/utilisateur/role/{id}', [UtilisateurController::class, 'role'])->name('utilisateur.role');
+    Route::get('/utilisateur/update/{id}', [UtilisateurController::class, 'update'])->name('utilisateur.update');
+    Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'destroy'])->name('utilisateur.destroy');
+    
+    /// Stock Link ::::::::::::::::::::::::::
+    Route::get('/stock', [ProduitController::class, 'index'])->name('produit.index');
+    Route::get('/stock/{id}', [ProduitController::class, 'inventory'])->name('produit.inventory');
+    Route::get('/stock/edit/{id}', [ProduitController::class, 'edit'])->name('produit.edit');
+    Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('produit.destroy');
+
+
+
+    /// Parameters Link ::::::::::::::::::::::::::
     // Start Route Ville ::::::::::::::::::::::::::::::::
     Route::get('/villes', [VilleController::class, 'index'])->name('villes.index');
+    Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
     Route::post('/villes', [VilleController::class, 'store'])->name('villes.store');
     Route::get('/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
     Route::put('/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
@@ -75,7 +105,7 @@ Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
 // Start Route Coli ::::::::::::::::::::::::::::::::
 
 // Route::get('/client/colis', [ColiController::class, 'index'])->name('colis.index');
-Route::get('/client/colis', [ColiController::class, 'indexByClient'])->name('colis.indexByClient');
+Route::get('/clients/colis', [ColiController::class, 'indexByClient'])->name('colis.indexByClient');
 Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
 Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
 Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');

@@ -15,10 +15,9 @@ class VilleController extends Controller
     public function index()
     {
         $zones = Zone::all();
-        $villes = Ville::with('zone')->orderBy('nom_ville')->get();
+        $villes = Ville::with('zone')->orderBy('nom_ville')->paginate(2);
         return view('admins.ville', compact('villes','zones'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -57,7 +56,8 @@ class VilleController extends Controller
      */
     public function show(string $id)
     {
-        //
+         $villes = Ville::where('id',$id)->orderBy('nom_ville')->get();
+        return response()->json($villes);
     }
     
     /**
