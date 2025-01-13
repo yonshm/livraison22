@@ -33,6 +33,18 @@ Route::prefix('client')->group(function () {
     Route::put('/update/{id}', [ClientController::class, 'update'])->name('clients.update');
     Route::delete('/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
+    // Start Route Coli ::::::::::::::::::::::::::::::::
+    Route::get('/client/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
+    Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
+    Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
+    Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');
+    Route::post('/client/colis', [ColiController::class, 'store'])->name('colis.store');
+    Route::get('/client/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
+    Route::get('/client/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
+    Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
+    Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
+    // End Route Coli ::::::::::::::::::::::::::::::::
+
     // Route Bon_Ramassage :::::::::::::::::
     Route::get('/bon/ramassage', [Bon_ramassageController::class, 'index'])->name('bon_ramassage.index');
     Route::get('/bon/ramassage/create', [Bon_ramassageController::class, 'create'])->name('bon_ramassage.create');
@@ -101,21 +113,6 @@ Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
 });
 // End Route Admin ::::::::::::::::::::::::::::::::
 
-
-// Start Route Coli ::::::::::::::::::::::::::::::::
-
-// Route::get('/client/colis', [ColiController::class, 'index'])->name('colis.index');
-Route::get('/clients/colis', [ColiController::class, 'indexByClient'])->name('colis.indexByClient');
-Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
-Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
-Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');
-Route::post('/client/colis', [ColiController::class, 'store'])->name('colis.store');
-Route::get('/client/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
-Route::get('/client/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
-Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
-Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
-
-// End Route Coli ::::::::::::::::::::::::::::::::
 
 // Start Route Auth ::::::::::::::::::::::::::::::::
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');

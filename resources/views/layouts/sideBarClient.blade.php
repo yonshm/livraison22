@@ -6,9 +6,9 @@
             <span>1 - Colis</span>
             <ul>
               <li><a href="{{route('colis.create')}}">nouveau coli </a></li>
-              <li><a href="{{route('colis.indexByClient')}}">liste colis </a></li>
-              <li><a href="#">colis pour ramasage </a></li>
-              <li><a href="#">colis non expedies </a></li>
+              <li><a href="{{route('colis.listeColis')}}">liste colis </a></li>
+              <li><a href="{{route('colis.colisAttenderRamassage')}}">colis pour ramasage </a></li>
+              <li><a href="{{route('colis.colisNonExpedies')}}">colis non expedies </a></li>
             </ul>
           </div>
           <div class="item">

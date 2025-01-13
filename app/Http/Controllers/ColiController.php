@@ -18,10 +18,11 @@ class ColiController extends Controller
         $colis = [];    
         return view('colis.index', compact('colis'));
     }
-    public function indexByClient()
+    public function listeColis()
     {
-        $colis = Coli::where('id_client',4)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
-        return view('colis.indexByClient',compact('colis'));
+        $id_client = 4;
+        $colis = Coli::where('id_client',$id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
+        return view('colis.index',compact('colis'));
     }
     public function colisAttenderRamassage()
     {

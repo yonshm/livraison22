@@ -14,9 +14,7 @@ class Bon_ramassageController extends Controller
     public function index()
     {
         $id_client = 4;
-        $noRamasse = Coli::where('id_client',$id_client)->whereNull('bon_ramassage')->where('pret_preparation',1)->with('ville')->with('business')->get();   
-        // $bonsRamassages = Bon_ramassage::with('coli')->with('coli.client')->where('id_client',$id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
-        $bonsRamassages = Bon_ramassage::with('coli')->with('ville')->get();  
+        $noRamasse = Coli::where('id_client',$id_client)->whereNull('bon_ramassage')->where('pret_preparation',1)->with('ville')->with('business')->get();    
         $bonsRamassages = Bon_ramassage::whereHas('coli', function($query) use ($id_client) {
                         $query->where('id_client', $id_client);
                     })

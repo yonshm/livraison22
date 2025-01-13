@@ -1,4 +1,12 @@
-<x-clientL>
+ @extends('layouts.master')
+
+@section('title', 'Client | Livraison')
+
+@section('content')
+<div class="home">
+    @include('layouts.sideBarClient')
+
+      <div class="main">
             <div class="card-body">
                 <div class="mb-2">
                   <h4 class="card-title mb-0">Colis Non Expedies</h4>
@@ -150,4 +158,6 @@
                 </div>
               </div>       
             </div>
-</x-clientL>
+      </div>
+</div>
+@endsection
