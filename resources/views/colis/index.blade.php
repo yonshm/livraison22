@@ -1,4 +1,4 @@
- @extends('layouts.master')
+@extends('layouts.master')
 
 @section('title', 'Client | Livraison')
 
@@ -7,7 +7,7 @@
     @include('layouts.sideBarClient')
 
       <div class="main">
-        <div class="card-body mx-4">
+        <div id="ajouterColi" class="card-body mx-4">
           <div class="mb-3 d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">Liste des Colis</h4>
             <a href="{{route('colis.create')}}" class="btn btn-success mb-0">Ajouter</a>

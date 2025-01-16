@@ -56,7 +56,7 @@
                   </thead>
                   <tbody>
                       @foreach ($produits as $p)
-                            <tr class="odd">
+                            <tr class="odd text-center">
                                 <td class="text-center" style="vertical-align: middle">
                                     <img height="100" src="https://fakeimg.pl/450x450/" alt="{{$p->nom_produit}}">
                                 </td>
@@ -71,14 +71,14 @@
                                 <td style="vertical-align: middle" >
                                     <ul>
                                         @foreach ($p->varainte as $v)
-                                        <li class="py-1"> {{$v->quantite}}</li>
+                                        <li class="py-1"> {{$v->SKU}}</li>
                                         @endforeach
                                     </ul>
                                 </td>
                                 <td style="vertical-align: middle" >
                                     <ul>
                                         @foreach ($p->varainte as $v)
-                                        <li class="py-1"> {{$v->SKU}}</li>
+                                        <li class="py-1"> {{$v->quantite}}</li>
                                         @endforeach
                                     </ul>
                                 </td>

@@ -112,9 +112,3 @@ Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
 
 });
 // End Route Admin ::::::::::::::::::::::::::::::::
-
-
-// Start Route Auth ::::::::::::::::::::::::::::::::
-Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::post('/login', [AuthController::class, 'check'])->name('auth.check');
-// End Route Auth ::::::::::::::::::::::::::::::::

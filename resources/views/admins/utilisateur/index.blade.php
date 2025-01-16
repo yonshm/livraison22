@@ -10,7 +10,7 @@
         <div class="card right-side">
             <div class="card-body">
                 <div class="mb-3 d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Liste des Villes</h4>
+                    <h4 class="card-title mb-0">Liste des utilisateur</h4>
                     <a href="{{route('utilisateur.create')}}" class="btn btn-success mb-0">Ajouter</a>
                 </div>
                 <div class="table-responsive">

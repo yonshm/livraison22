@@ -14,11 +14,9 @@ class ClientController extends Controller
     public function index($user)
     {
         $clients = Utilisateur::with('client')->with('banque')->find($user);
-        if (!empty($clients) and $clients->id != 0){
-            return view('clients.index',compact('clients'));
-        }else{
-            return redirect()->route('auth.login');
-        }
+        
+        return view('clients.index',compact('clients'));
+        
     }
     
     /**

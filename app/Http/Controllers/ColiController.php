@@ -26,7 +26,8 @@ class ColiController extends Controller
     }
     public function colisAttenderRamassage()
     {
-        $colis = Coli::where('id_client',4)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();   
+        $id_client = 4;
+        $colis = Coli::where('id_client',$id_client)->whereNull('bon_ramassage')->with('ville')->with('business')->get();   
         return view('colis.colisAttenderRamassage',compact('colis'));
     }
     public function colisNonExpedies()

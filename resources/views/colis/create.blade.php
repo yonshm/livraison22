@@ -1,4 +1,10 @@
- @extends('layouts.master')
+<style>
+  #ajouterColi{
+    width: 90% !important;
+    margin: 0 auto;
+  }
+</style>
+@extends('layouts.master')
 
 @section('title', 'Client | Livraison')
 
@@ -7,7 +13,7 @@
     @include('layouts.sideBarClient')
 
       <div class="main">
-        <div class="card-body">
+        <div id="ajouterColi" class="card-body">
                 <h4 class="card-title mb-3 text-center">Nouveau colis</h4>
                 <span>Rotour List colis</span>
                 <form class="mt-2" action="{{route('colis.store')}}" method="POST">

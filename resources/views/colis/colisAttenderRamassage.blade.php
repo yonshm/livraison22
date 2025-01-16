@@ -45,8 +45,9 @@
                               </span>
                             </td>
                             <td>
-                              <span style="padding: 6px 15px;" class="alert alert-warning text-warning">
-                                Attender Ramassage
+                              <span style="padding: 6px 15px;" class="alert alert-primary text-primary">
+                                {{$coli->etatbon_ramassage ? 'Attender Ramassage' : 'Nouveau Coli' }}
+                                
                               </span>
                             </td>
                             <td>{{$coli->ville->nom_ville}} - {{$coli->adresse}}</td>
