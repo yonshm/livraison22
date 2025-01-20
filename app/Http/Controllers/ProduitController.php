@@ -22,7 +22,8 @@ class ProduitController extends Controller
      */
     public function create()
     {
-        //
+        $business = Business::all();
+        return view('produits.create',compact('business'));
     }
 
     /**

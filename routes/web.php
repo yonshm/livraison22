@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Bon_ramassageController;
@@ -12,6 +11,8 @@ use App\Http\Controllers\UtilisateurController;
 use App\Http\Controllers\ZoneController;
 use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Middleware\CheckAdminMiddleware;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -19,7 +20,7 @@ use App\Http\Controllers\ProduitController;
 
 
 Route::prefix('client')->group(function () {
-    
+
     Route::get('/{user}', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
     Route::post('/', [ClientController::class, 'store'])->name('clients.store');
@@ -48,48 +49,46 @@ Route::prefix('client')->group(function () {
 });
 // End Route Clients :::::::::::::::::::::::::::::::::
 
-Route::prefix('admin')->group(function () {
+// Start MiddleWare admin
+Route::middleware(['auth', CheckAdminMiddleware::class ])->group(function () {
+    Route::prefix('admin')->group(function () {
+        /// utilisateur Link ::::::::::::::::::::::::::
+        Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur.index');
+        Route::get('/utilisateur/create', [UtilisateurController::class, 'create'])->name('utilisateur.create');
+        Route::post('/utilisateur', [UtilisateurController::class, 'store'])->name('utilisateur.store');
+        Route::get('/utilisateur/edit/{id}', [UtilisateurController::class, 'edit'])->name('utilisateur.edit');
+        Route::get('/utilisateur/role/{id}', [UtilisateurController::class, 'role'])->name('utilisateur.role');
+        Route::get('/utilisateur/update/{id}', [UtilisateurController::class, 'update'])->name('utilisateur.update');
+        Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'destroy'])->name('utilisateur.destroy');
 
-    /// utilisateur Link ::::::::::::::::::::::::::
-    Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur.index');
-    Route::get('/utilisateur/create', [UtilisateurController::class, 'create'])->name('utilisateur.create');
-    Route::post('/utilisateur', [UtilisateurController::class, 'store'])->name('utilisateur.store');
-    Route::get('/utilisateur/edit/{id}', [UtilisateurController::class, 'edit'])->name('utilisateur.edit');
-    Route::get('/utilisateur/role/{id}', [UtilisateurController::class, 'role'])->name('utilisateur.role');
-    Route::get('/utilisateur/update/{id}', [UtilisateurController::class, 'update'])->name('utilisateur.update');
-    Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'destroy'])->name('utilisateur.destroy');
-    
-    /// Stock Link ::::::::::::::::::::::::::
-    Route::get('/stock', [ProduitController::class, 'index'])->name('produit.index');
-    Route::get('/stock/{id}', [ProduitController::class, 'inventory'])->name('produit.inventory');
-    Route::get('/stock/edit/{id}', [ProduitController::class, 'edit'])->name('produit.edit');
-    Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('produit.destroy');
+        /// Stock Link ::::::::::::::::::::::::::
+        Route::get('/stock', [ProduitController::class, 'index'])->name('produit.index');
+        Route::get('/stock/create', [ProduitController::class, 'create'])->name('produit.create');
+        Route::get('/stock/{id}', [ProduitController::class, 'inventory'])->name('produit.inventory');
+        Route::get('/stock/edit/{id}', [ProduitController::class, 'edit'])->name('produit.edit');
+        Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('produit.destroy');
 
 
 
-    /// Parameters Link ::::::::::::::::::::::::::
-    // Start Route Ville ::::::::::::::::::::::::::::::::
-    Route::get('/villes', [VilleController::class, 'index'])->name('villes.index');
-    Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
-    Route::post('/villes', [VilleController::class, 'store'])->name('villes.store');
-    Route::get('/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
-    Route::put('/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
-    Route::delete('/villes/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
-    // End Route Ville ::::::::::::::::::::::::::::::::
-    
-    // Start Route Zone ::::::::::::::::::::::::::::::::
-    Route::get('/zones', [ZoneController::class, 'index'])->name('zones.index');
-    Route::post('/zones', [ZoneController::class, 'store'])->name('zones.store');
-    Route::get('/zones/edit/{id}', [ZoneController::class, 'edit'])->name('zones.edit');
-    Route::put('/zones/update/{id}', [ZoneController::class, 'update'])->name('zones.update');
-    Route::delete('/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
-    // End Route Zone ::::::::::::::::::::::::::::::::
-    
-    // Start Route General ::::::::::::::::::::::::::::::::
+        /// Parameters Link ::::::::::::::::::::::::::
+        // Start Route Ville ::::::::::::::::::::::::::::::::
+        Route::get('/villes', [VilleController::class, 'index'])->name('villes.index');
+        Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
+        Route::post('/villes', [VilleController::class, 'store'])->name('villes.store');
+        Route::get('/villes/edit/{id}', [VilleController::class, 'edit'])->name('villes.edit');
+        Route::put('/villes/update/{id}', [VilleController::class, 'update'])->name('villes.update');
+        Route::delete('/villes/{id}', [VilleController::class, 'destroy'])->name('villes.destroy');
+        // End Route Ville ::::::::::::::::::::::::::::::::
 
-    Route::get('/general', [GeneralConteroller::class, 'index'])->name('general.index');
-    Route::put('/general/update/{id}', [GeneralConteroller::class, 'update'])->name('general.update');
+        // Start Route Zone ::::::::::::::::::::::::::::::::
+        Route::get('/zones', [ZoneController::class, 'index'])->name('zones.index');
+        Route::post('/zones', [ZoneController::class, 'store'])->name('zones.store');
+        Route::get('/zones/edit/{id}', [ZoneController::class, 'edit'])->name('zones.edit');
+        Route::put('/zones/update/{id}', [ZoneController::class, 'update'])->name('zones.update');
+        Route::delete('/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
+        // End Route Zone ::::::::::::::::::::::::::::::::
 
+<<<<<<< HEAD
     // Start Route General ::::::::::::::::::::::::::::::::
     // Start Route Admin ::::::::::::::::::::::::::::::::
      
@@ -110,3 +109,37 @@ Route::prefix('admin')->group(function () {
 
 // Login
 Route::get('/login', [AdminController::class, 'loginSide'])->name('loginSide');
+=======
+        // Start Route General ::::::::::::::::::::::::::::::::
+
+        Route::get('/general', [GeneralConteroller::class, 'index'])->name('general.index');
+        Route::put('/general/update/{id}', [GeneralConteroller::class, 'update'])->name('general.update');
+
+        // Start Route General ::::::::::::::::::::::::::::::::
+        // Start Route Admin ::::::::::::::::::::::::::::::::
+
+        Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+        Route::get('/create', [AdminController::class, 'create'])->name('admins.create');
+        Route::post('/', [AdminController::class, 'store'])->name('admins.store');
+        Route::get('/{id}', [AdminController::class, 'show'])->name('admins.show');
+        Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admins.edit');
+        Route::put('/update/{id}', [AdminController::class, 'update'])->name('admins.update');
+        Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admins.destroy');
+
+
+        Route::get('/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
+        Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
+        
+    });
+});
+// End Route Admin ::::::::::::::::::::::::::::::::
+
+// Start Login ::::::::::::::::::::::::::::::::
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// End Login ::::::::::::::::::::::::::::::::
+>>>>>>> 47e1685f28247210cbe6af13e69862aae15f4c65

@@ -10,11 +10,7 @@
   <title>App | Livraison</title>
 </head>
 
-<<<<<<< HEAD:resources/views/loginSide.blade.php
-<body class="data-sidebartype="full"">
-=======
 <body class="data-sidebartype='full'">
->>>>>>> 47e1685f28247210cbe6af13e69862aae15f4c65:resources/views/auth/loginSide.blade.php
   <div id="main-wrapper" class="d-flex">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
@@ -26,34 +22,40 @@
                 <a href="/" class="text-nowrap logo-img d-block w-100">
                   <img src="{{asset('images/logos/logo-icon.svg')}}" class="dark-logo" alt="Logo-Dark" />
                 </a>
-                <h2 class="mb-2 mt-4 fs-7 fw-bolder">Sign In</h2>
+                <h2 class="mb-2 mt-4 fs-7 fw-bolder">Sign Up</h2>
                 <p class="mb-9">Your Admin Dashboard</p>
-
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ route('register') }}" method="POST">
                   @csrf
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                    <label for="inputNom" class="form-label">Nom</label>
+                    <input type="text" name="nom" class="form-control" value="{{old('nom')}}" id="inputNom"
+                      aria-describedby="emailHelp" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputEmail1" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{old('email')}}" id="inputEmail1"
                       aria-describedby="emailHelp" />
                   </div>
                   <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" />
+                    <label for="inputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="inputPassword1" />
+                  </div>
+                  <div class="mb-4">
+                    <label for="inputPassword2" class="form-label">Confirm Password</label>
+                    <input type="password" name="password_confirmation" class="form-control" id="inputPassword2" />
                   </div>
                   <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
                       <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked />
                       <label class="form-check-label text-dark" for="flexCheckChecked">
-                        Remeber this Device
+                        Keep me logged in
                       </label>
                     </div>
-                    <a class="text-primary fw-medium" href="./authentication-forgot-password.html">Forgot Password ?</a>
                   </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
+                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign Up</button>
                   <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-medium">New to App | Livraison ?</p>
-                    <a class="text-primary fw-medium ms-2" href="{{route('register')}}">Create an
-                      account</a>
+                    <p class="fs-4 mb-0 fw-medium">Already have an Account?</p>
+                    <a class="text-primary fw-medium ms-2" href="{{route('login')}}">Sign in Now</a>
                   </div>
                 </form>
               </div>
