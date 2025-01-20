@@ -68,6 +68,7 @@ Route::middleware(['auth', CheckAdminMiddleware::class ])->group(function () {
 
         /// Stock Link ::::::::::::::::::::::::::
         Route::get('/stock', [ProduitController::class, 'index'])->name('produit.index');
+        Route::get('/stock/create', [ProduitController::class, 'create'])->name('produit.create');
         Route::get('/stock/{id}', [ProduitController::class, 'inventory'])->name('produit.inventory');
         Route::get('/stock/edit/{id}', [ProduitController::class, 'edit'])->name('produit.edit');
         Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('produit.destroy');
