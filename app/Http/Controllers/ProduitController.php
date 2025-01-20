@@ -40,7 +40,7 @@ class ProduitController extends Controller
     {
         $business = Business::all();
         $produits = Produit::with('varainte')->with('business')->orderByDesc('id')->paginate(5);
-        return view('admins.produits.index' ,compact('produits','business'));
+        return view('produits.index' ,compact('produits','business'));
     }
     public function show(string $id)
     {
