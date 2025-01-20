@@ -29,7 +29,6 @@
 @section('content')
 <div class="home">
     @include('layouts.sideBarAdmin')
-
     <div class="main">
         <div class="card right-side">
             <div class="card-body">

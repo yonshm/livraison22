@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Zone;
 use App\Models\Ville;
-use Exception;
+use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 
 class ZoneController extends Controller
@@ -14,9 +15,10 @@ class ZoneController extends Controller
      */
     public function index()
     {
+        $id_user = 4;
+        $utilisateur = Utilisateur::find($id_user);
         $zoneWithVille = Zone::with('ville')->orderBy('nom_zone')->paginate(5);
-        // dd($zoneWithVille);
-        return view('admins.zone', compact('zoneWithVille'));
+        return view('admins.zone', compact('zoneWithVille','utilisateur'));
     }
 
     /**
@@ -60,8 +62,10 @@ class ZoneController extends Controller
      */
     public function edit(string $id)
     {
+        $id_user = 4;
+        $utilisateur = Utilisateur::find($id_user);
         $zone = Zone::find($id);
-        return view('admins.zoneEdit', compact('zone'));
+        return view('admins.zoneEdit', compact('zone','utilisateur'));
     }
 
     /**

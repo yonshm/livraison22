@@ -11,10 +11,6 @@
 </head>
 
 <body class="data-sidebartype="full"">
-  <!-- Preloader -->
-  {{-- <div class="preloader">
-    <img src="{{asset('images/logos/favicon.png"')}} alt="loader" class="lds-ripple img-fluid" />
-  </div> --}}
   <div id="main-wrapper" class="d-flex">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">

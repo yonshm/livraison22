@@ -13,16 +13,11 @@ use App\Http\Controllers\ZoneController;
 use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Start Route Clients ::::::::::::::::::::::::::::::::
-// Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
-
-// Route::get('/clients/{id}', function () {
-//     return view('clients.show');
+// Route::get('/', function () {
+//     return view('welcome');
 // });
+
+
 Route::prefix('client')->group(function () {
     
     Route::get('/{user}', [ClientController::class, 'index'])->name('clients.index');
@@ -97,7 +92,7 @@ Route::prefix('admin')->group(function () {
 
     // Start Route General ::::::::::::::::::::::::::::::::
     // Start Route Admin ::::::::::::::::::::::::::::::::
-    
+     
     Route::get('/', [AdminController::class, 'index'])->name('admins.index');
     Route::get('/create', [AdminController::class, 'create'])->name('admins.create');
     Route::post('/', [AdminController::class, 'store'])->name('admins.store');
@@ -105,10 +100,13 @@ Route::prefix('admin')->group(function () {
     Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admins.edit');
     Route::put('/update/{id}', [AdminController::class, 'update'])->name('admins.update');
     Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admins.destroy');
-
-
-Route::get('/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
-Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
-
+    
+    
+    Route::get('/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
+    Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
+    
 });
 // End Route Admin ::::::::::::::::::::::::::::::::
+
+// Login
+Route::get('/login', [AdminController::class, 'loginSide'])->name('loginSide');

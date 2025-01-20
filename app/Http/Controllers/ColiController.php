@@ -65,8 +65,6 @@ class ColiController extends Controller
             //     'date_creation' => 'required|date',
             //     'marchandise' => 'string|max:255',
             //     'id_client' => 'required|exists:utilisateurs,id']);
-            $data = $request->except(['created_at', 'updated_at']);
-
             // $data['created_at'] = now();
             // $data['updated_at'] = now();
             // $data['ouvrir'] = 1;
@@ -75,7 +73,7 @@ class ColiController extends Controller
             $data['date_creation'] = Carbon::now()->toDateString();
             $data['id_client'] = 4;
             $data['bon_ramassage'] = null;
-            $data['id_business'] = 1;
+            $data['id_business'] = $request->id_business;
 
 
             Coli::create($data);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Utilisateur;
 use App\Models\Zone;
 use App\Models\Ville;
 use Exception;
@@ -14,9 +15,11 @@ class VilleController extends Controller
      */
     public function index()
     {
+        $id_user = 4;
+        $utilisateur = Utilisateur::find($id_user);
         $zones = Zone::all();
         $villes = Ville::with('zone')->orderBy('nom_ville')->paginate(2);
-        return view('admins.ville', compact('villes','zones'));
+        return view('admins.ville', compact('villes','zones','utilisateur'));
     }
     /**
      * Show the form for creating a new resource.
@@ -57,7 +60,7 @@ class VilleController extends Controller
     public function show(string $id)
     {
          $villes = Ville::where('id',$id)->orderBy('nom_ville')->get();
-        return response()->json($villes);
+            return response()->json($villes);
     }
     
     /**
@@ -65,9 +68,11 @@ class VilleController extends Controller
      */
     public function edit(string $id)
     {
+        $id_user = 4;
+        $utilisateur = Utilisateur::find($id_user);
         $zones = Zone::all();
         $ville = Ville::find($id);
-        return view('admins.villeEdit', compact('ville','zones'));
+        return view('admins.villeEdit', compact('ville','zones','utilisateur'));
     }
     
     /**
