@@ -22,19 +22,19 @@ class ColiController extends Controller
     public function listeColis()
     {
         $id_client = session('user')->id;
-        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();
+        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->orderByDesc('id')->get();
         return view('colis.index', compact('colis'));
     }
     public function colisAttenderRamassage()
     {
         $id_client = session('user')->id;
-        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();
+        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->orderByDesc('id')->get();
         return view('colis.colisAttenderRamassage', compact('colis'));
     }
     public function colisNonExpedies()
     {
         $id_client = session('user')->id;
-        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->get();
+        $colis = Coli::where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->orderByDesc('id')->get();
         return view('colis.colisNonExpedies', compact('colis'));
     }
 
@@ -54,8 +54,8 @@ class ColiController extends Controller
      */
     private function trackNumber($idColi, $fromCity, $toCity)
     {
-        $currentTime = now()->format('dmy-His');
-        $track_number = "$fromCity$toCity-$currentTime-$idColi";
+        $currentTime = now()->format('dmyHis');
+        $track_number = "$fromCity$toCity$currentTime$idColi";
         return $track_number;
     }
     public function store(Request $request)

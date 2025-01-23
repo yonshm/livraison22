@@ -50,8 +50,8 @@ class Bon_ramassageController extends Controller
      */
     private function refRamassage($idClient)
     {
-        $currentTime = now()->format('dmy-His');
-        $ref_amassage = "BL-$currentTime-$idClient";
+        $currentTime = now()->format('dmyHis');
+        $ref_amassage = "BL$currentTime$idClient";
         return $ref_amassage;
     }
     public function store(Request $request)
@@ -59,32 +59,30 @@ class Bon_ramassageController extends Controller
         $id_client = session('user')->id;
         $colis = $request->input('colis');
         $ref_ramassage = $this->refRamassage($id_client);
-
-        $bonRamassage = array_map(function () use ($id_client, $ref_ramassage) {
-            return [
-                'id_client' => $id_client,
-                'ref_ramassage' => $ref_ramassage,
-                'date' => '2025-01-23',
-                'ville_ramassage' => 1,
-
-            ];
-        }, $colis);
-        // Bon_ramassage::create($bonRamassage);
+        $bonRamassage = [
+            'id_client' => $id_client,
+            'ref_ramassage' => $ref_ramassage,
+            'date' => '2025-01-23',
+            'ville_ramassage' => 1,
+        ];
+        Bon_ramassage::create($bonRamassage);
 
         $bon = Bon_ramassage::where('ref_ramassage', $ref_ramassage)->first();
-        // foreach ($colis as $idColi) {
-        //     $id = intval($idColi);
-        //     $coli = Coli::find($id);
 
-        //     if ($coli) {
-        //         $coli->bon_ramassage = $bon->id;
-        //         $coli->save();
-        //     }
-        // }
+        foreach ($colis as $idColi) {
+            $id = intval($idColi);
+            $coli = Coli::find($id);
+
+            if ($coli) {
+                $coli->bon_ramassage = $bon->id;
+                $coli->save();
+            }
+        }
 
         return response()->json([
             'message' => 'Data received successfully!',
-            'colis' => $bonRamassage
+            'colis' => $bonRamassage,
+            'coli' => $bon->id
         ]);
     }
 

@@ -17,7 +17,7 @@
                   <!-- start row -->
                   <tr>
                     <th>code Suivi</th>
-                    <th>Expediteur</th>
+                    <th>Business</th>
                     <th>Destinataire</th>
                     <th>Etat</th>
                     <th>Status</th>
@@ -44,7 +44,7 @@
               @else
                     @foreach ($colis as $coli)
                           <tr class="odd">
-                            <td>SUI-00{{$coli->id}}</td>
+                            <td>{{$coli->track_number}}</td>
                             <td>{{$coli->business->nom_business}}</td>
                             <td>{{$coli->destinataire}}</td>
                             <td>

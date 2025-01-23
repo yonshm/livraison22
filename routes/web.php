@@ -15,9 +15,9 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
 
