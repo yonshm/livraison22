@@ -16,20 +16,41 @@ class UtilisateurController extends Controller
      */
     public function index()
     {
-        $utilisateurs = Utilisateur::with('ville','role')->where('status',1)->orderByDesc('id')->paginate(2);
+        $id = session('user')->id;
+        $utilisateurs = Utilisateur::with('ville', 'role')
+            ->where('id', '!=', $id)
+            ->where('status', 1)
+            ->whereNotNull('local')
+            ->whereNotNull('id_banque')
+            ->orderByDesc('id')
+            ->paginate(5);
         return view('admins.utilisateur.index', compact('utilisateurs'));
+    }
+    public function attendeActivation()
+    {
+        $id = session('user')->id;
+        $utilisateurs = Utilisateur::with('ville', 'role')
+            ->where('id', '!=', $id)
+            ->where('status', 0)
+            ->whereNotNull('local')
+            ->whereNotNull('id_banque')
+            ->orderByDesc('id')
+            ->paginate(5);
+        return view('admins.utilisateur.attendeActivation', compact('utilisateurs'));
     }
     public function role($nom_role)
     {
-        $utilisateurs = Utilisateur::with('ville','role')
-            ->where('status',1)
+        $id = session('user')->id;
+        $utilisateurs = Utilisateur::with('ville', 'role')
+            ->where('id', '!=', $id)
+            ->where('status', 1)
+            ->where('active', 1)
             ->whereHas('role', function ($query) use ($nom_role) {
-            $query->where('nom_role', $nom_role);
-        })->orderByDesc('id')->paginate(2);
-        // $utilisateurs = $nom_role;
+                $query->where('nom_role', $nom_role);
+            })->orderByDesc('id')->paginate(2);
         return view('admins.utilisateur.index', compact('utilisateurs'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -38,7 +59,7 @@ class UtilisateurController extends Controller
         $roles = Role::all();
         $banques = Banque::all();
         $villes = Ville::all();
-        return view('admins.utilisateur.create', compact('roles','banques','villes'));
+        return view('admins.utilisateur.create', compact('roles', 'banques', 'villes'));
     }
 
     /**
@@ -47,7 +68,7 @@ class UtilisateurController extends Controller
 
     public function store(Request $request)
     {
-        try{
+        try {
             $request->validate([
                 'nom' => 'required|string|max:30',
                 'cin' => 'required|string|max:15',
@@ -61,11 +82,11 @@ class UtilisateurController extends Controller
                 'id_role' => 'required|integer|exists:roles,id',
             ]);
             Utilisateur::create($request->all());
-            return redirect()->route('utilisateur.index',['message' => 'create successfully created!'], 201);
-        }catch(Exception $err){
+            return redirect()->route('utilisateur.index', ['message' => 'create successfully created!'], 201);
+        } catch (Exception $err) {
             return response()->json([
-            'error' => 'Failed to create utilisateur',
-            'message' => $err->getMessage(),
+                'error' => 'Failed to create utilisateur',
+                'message' => $err->getMessage(),
             ], 500);
         }
     }
@@ -92,6 +113,32 @@ class UtilisateurController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+    public function deactivateAccount(Request $request, $id)
+    {
+        $user = Utilisateur::find($id);
+        $user->active = 0;
+        $user->save();
+    }
+    public function activeAccount(Request $request, $id)
+    {
+        $user = Utilisateur::find($id);
+        $user->active = 1;
+        $user->save();
+    }
+    public function accepteAccount(Request $request, $id)
+    {
+        $user = Utilisateur::find($id);
+        $user->status = 1;
+        $user->active = 1;
+        $user->save();
+    }
+    public function refuseAccount(Request $request, $id)
+    {
+        $user = Utilisateur::find($id);
+        $user->status = 0;
+        $user->active = 0;
+        $user->save();
     }
 
     /**

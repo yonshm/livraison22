@@ -13,49 +13,56 @@ use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\CheckAdminMiddleware;
+use App\Http\Middleware\CheckClientMiddleware;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
+Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
 
-Route::prefix('client')->group(function () {
+    Route::prefix('client')->group(function () {
 
-    Route::get('/{user}', [ClientController::class, 'index'])->name('clients.index');
-    Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
-    Route::post('/', [ClientController::class, 'store'])->name('clients.store');
-    // Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
-    Route::get('/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
-    Route::put('/update/{id}', [ClientController::class, 'update'])->name('clients.update');
-    Route::delete('/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
+        Route::get('/{user}', [ClientController::class, 'index'])->name('clients.index');
+        Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
+        Route::post('/', [ClientController::class, 'store'])->name('clients.store');
+        // Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
+        Route::get('/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
+        Route::put('/update/{id}', [ClientController::class, 'update'])->name('clients.update');
+        Route::delete('/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
-    // Start Route Coli ::::::::::::::::::::::::::::::::
-    Route::get('/client/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
-    Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
-    Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
-    Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');
-    Route::post('/client/colis', [ColiController::class, 'store'])->name('colis.store');
-    Route::get('/client/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
-    Route::get('/client/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
-    Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
-    Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
-    // End Route Coli ::::::::::::::::::::::::::::::::
+        // Start Route Coli ::::::::::::::::::::::::::::::::
+        Route::get('/client/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
+        Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
+        Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
+        Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');
+        Route::post('/client/colis', [ColiController::class, 'store'])->name('colis.store');
+        Route::get('/client/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
+        Route::get('/client/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
+        Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
+        Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
+        // End Route Coli ::::::::::::::::::::::::::::::::
 
-    // Route Bon_Ramassage :::::::::::::::::
-    Route::get('/bon/ramassage', [Bon_ramassageController::class, 'index'])->name('bon_ramassage.index');
-    Route::get('/bon/ramassage/create', [Bon_ramassageController::class, 'create'])->name('bon_ramassage.create');
-    Route::post('/bon/ramassage', [Bon_ramassageController::class, 'store'])->name('bon_ramassage.store');
-    Route::delete('/bon/ramassage/{id}', [Bon_ramassageController::class, 'destroy'])->name('bon_ramassage.destroy');
+        // Route Bon_Ramassage :::::::::::::::::
+        Route::get('/bon/ramassage', [Bon_ramassageController::class, 'index'])->name('bon_ramassage.index');
+        Route::get('/bon/ramassage/create', [Bon_ramassageController::class, 'create'])->name('bon_ramassage.create');
+        Route::post('/bon/ramassage', [Bon_ramassageController::class, 'store'])->name('bon_ramassage.store');
+        Route::delete('/bon/ramassage/{id}', [Bon_ramassageController::class, 'destroy'])->name('bon_ramassage.destroy');
+    });
+    // End Route Clients :::::::::::::::::::::::::::::::::
 });
-// End Route Clients :::::::::::::::::::::::::::::::::
-
 // Start MiddleWare admin
-Route::middleware(['auth', CheckAdminMiddleware::class ])->group(function () {
+Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
     Route::prefix('admin')->group(function () {
         /// utilisateur Link ::::::::::::::::::::::::::
         Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur.index');
+        Route::get('/utilisateur/attendeActivation', [UtilisateurController::class, 'attendeActivation'])->name('utilisateur.attendeActivation');
         Route::get('/utilisateur/create', [UtilisateurController::class, 'create'])->name('utilisateur.create');
         Route::post('/utilisateur', [UtilisateurController::class, 'store'])->name('utilisateur.store');
+        Route::post('/utilisateur/deactivate/{id}', [UtilisateurController::class, 'deactivateAccount'])->name('utilisateur.deactivateAccount');
+        Route::post('/utilisateur/activeAccount/{id}', [UtilisateurController::class, 'activeAccount'])->name('utilisateur.activeAccount');
+        Route::post('/utilisateur/accepteAccount/{id}', [UtilisateurController::class, 'accepteAccount'])->name('utilisateur.accepteAccount');
+        Route::post('/utilisateur/refuseAccount/{id}', [UtilisateurController::class, 'refuseAccount'])->name('utilisateur.refuseAccount');
         Route::get('/utilisateur/edit/{id}', [UtilisateurController::class, 'edit'])->name('utilisateur.edit');
         Route::get('/utilisateur/role/{id}', [UtilisateurController::class, 'role'])->name('utilisateur.role');
         Route::get('/utilisateur/update/{id}', [UtilisateurController::class, 'update'])->name('utilisateur.update');
@@ -107,16 +114,17 @@ Route::middleware(['auth', CheckAdminMiddleware::class ])->group(function () {
 
         Route::get('/clients', [AdminController::class, 'showClients'])->name('admins.showClients');
         Route::get('/clients/t', [AdminController::class, 'test'])->name('admins.test');
-        
+
     });
 });
 // End Route Admin ::::::::::::::::::::::::::::::::
+Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
 
 // Start Login ::::::::::::::::::::::::::::::::
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // End Login ::::::::::::::::::::::::::::::::

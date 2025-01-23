@@ -32,6 +32,10 @@
                       aria-describedby="emailHelp" />
                   </div>
                   <div class="mb-3">
+                    <label for="inputCin" class="form-label">CIN</label>
+                    <input type="text" name="cin" class="form-control" value="{{old('cin')}}" id="inputCin" />
+                  </div>
+                  <div class="mb-3">
                     <label for="inputEmail1" class="form-label">Email</label>
                     <input type="email" name="email" class="form-control" value="{{old('email')}}" id="inputEmail1"
                       aria-describedby="emailHelp" />

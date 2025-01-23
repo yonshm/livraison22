@@ -7,6 +7,7 @@
     @include('layouts.sideBarClient')
 
       <div class="main">
+        
       </div>
 </div>
 @endsection

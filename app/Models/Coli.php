@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Coli extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['ref','telephone','adresse','id_business','marchandise','id_ville','destinataire','ouvrir',
+    protected $fillable = ['track_number','telephone','adresse','bon_distribution','id_business','marchandise','id_ville','destinataire','ouvrir',
                     'date_creation','bon_ramassage','prix','id_client','pret_preparation','etat',
                     'coli_type','commentaire'];
 

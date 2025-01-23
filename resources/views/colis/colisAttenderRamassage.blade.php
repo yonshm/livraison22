@@ -34,6 +34,14 @@
                 <!-- end row -->
               </thead>
               <tbody>
+              @if ($colis->isEmpty())
+                <tr>
+                  <td class="text-center" colspan="10">
+                  Aucune Colis Attender ramassage
+                  </td>
+                </tr>
+
+              @else
                     @foreach ($colis as $coli)
                           <tr class="odd">
                             <td>SUI-00{{$coli->id}}</td>
@@ -95,6 +103,7 @@
                             </td>
                         </tr>
                   @endforeach
+                  @endif
               </tbody>
               </table>
             </div>

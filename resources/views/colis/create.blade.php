@@ -52,6 +52,17 @@
                             </select>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                            <label class="form-label">Business</label>
+                            <select id="slc-business" class="form-select" name="id_business" aria-label="Default select example">
+                                <option selected="">Business</option>
+                                @foreach ($business as $b)
+                                    <option value="{{$b->id}}">{{$b->nom_business}}</option>
+                                @endforeach
+                            </select>
+                            </div>
+                        </div>
                         
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -93,7 +104,7 @@
                         <div class="row my-1">
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="ouvrirColis">
+                                    <input class="form-check-input" type="checkbox" value="" name="ouvrir" id="ouvrirColis">
                                     <label class="form-check-label" for="ouvrirColis">
                                         interdit d'ouvrir le colis
                                     </label>
@@ -179,7 +190,7 @@
 
         slc_ville.addEventListener('change', () => {
             const id = slc_ville.value;
-            fetch('/admin/villes/'+id)
+            fetch('/villes/'+id)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

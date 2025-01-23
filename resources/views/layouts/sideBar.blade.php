@@ -50,9 +50,8 @@
                             <li><a href="{{route('utilisateur.index')}}">touts</a></li>
                             <li><a href="{{route('utilisateur.role','client')}}">Client</a></li>
                             <li><a href="{{route('utilisateur.role','moderateur')}}">Moderateur</a></li>
-                            <li><a href="{{route('utilisateur.role','livreur')}}">Liverur</a></li>
+                            <li><a href="{{route('utilisateur.role','liverur')}}">Liverur</a></li>
                             <li><a href="{{route('utilisateur.role','admin')}}">Administrateur</a></li>
-                            <li><a href="{{route('utilisateur.attendeActivation')}}">En attende d'activation</a></li>
                           </ul>
                         </div>
                       </div>

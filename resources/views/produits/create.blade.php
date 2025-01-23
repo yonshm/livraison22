@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<div>
-    <!-- An unexamined life is not worth living. - Socrates -->
-</div>
-=======
 @extends('layouts.master')
 
 @section('title', 'Admin | Livraison')
@@ -149,4 +144,3 @@
         </script>
 
         @endsection
->>>>>>> 47e1685f28247210cbe6af13e69862aae15f4c65

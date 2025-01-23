@@ -1,200 +1,158 @@
 <style>
-    body {
+  body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s;
-}
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
 
-.navbar {
+  .menuProfile {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-.toggle-dark-mode {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-}
-
-.notifications {
+  .menuProfile .profile-container {
     position: relative;
-}
+  }
 
-.notification-bell {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-}
-
-.badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 5px;
-    font-size: 12px;
-}
-
-.language-selector {
-    margin: 0 15px;
-}
-
-.flag-icon {
-    width: 24px;
-    height: auto;
-}
-
-.user-avatar {
-    position: relative;
-    cursor: pointer;
-}
-
-.avatar {
+  .menuProfile .profile-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-}
+    cursor: pointer;
+  }
 
-.profile-dropdown {
-    display: none;
-    min-width: fit-content;
-    width: 180px;
+  .menuProfile .dropdown {
     position: absolute;
     top: 50px;
     right: 0;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    width: 250px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-}
+  }
 
-.user-avatar .showProfile {
-    display: block;
-}
+  .menuProfile .hidden {
+    display: none;
+  }
 
-.profile-info {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-}
+  .menuProfile .dropdown-header {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
 
-.username {
-    margin-right: 10px;
-}
+  .menuProfile .name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
 
-.pro-badge {
-    background-color: gold;
-    border-radius: 5px;
-    padding: 2px 5px;
+  .menuProfile .badge {
     font-size: 12px;
-}
+    color: #fff;
+    background-color: #4caf50;
+    border-radius: 12px;
+    padding: 2px 6px;
+    margin-left: 5px;
+  }
 
-#profile-dropdown ul {
+  .menuProfile .email {
+    font-size: 14px;
+    color: #757575;
+    margin: 5px 0 0;
+  }
+
+  .menuProfile .dropdown-profile-menu {
     list-style: none;
     padding: 0;
     margin: 0;
-}
+  }
 
-#profile-dropdown li {
+  .menuProfile .dropdown-profile-menu li {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .menuProfile .dropdown-profile-menu li:last-child {
+    border-bottom: none;
+  }
+
+  .menuProfile .dropdown-profile-menu a {
+    display: block;
     padding: 10px 15px;
-}
-#profile-dropdown li a{
-    position: relative;
-}
-#profile-dropdown li:hover {
-    background-color: #f0f0f0;
-}
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
 
-#profile-dropdown .sign-out {
-    color: red;
-}
+  .menuProfile .dropdown-profile-menu a:hover {
+    background-color: #f5f5f5;
+    color: #635bff;
+  }
 
-#profile-dropdown .pink-badge {
-    background-color: pink;
-    border-radius: 50%;
-    padding: 2px 5px;
+  .menuProfile .notification-badge {
     font-size: 12px;
-    position: absolute;
-    left: 73px;
-    width: fit-content;
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #333;
     color: #fff;
-}
-
-body.dark-mode .navbar {
-    background-color: #444;
-}
-
-body.dark-mode .profile-dropdown { }
+    background-color: #f44336;
+    border-radius: 12px;
+    padding: 2px 6px;
+    margin-left: 10px;
+  }
 </style>
+<nav>
 
-
-<!-- Nav -->
-<nav class="navbar">
+  <div class="menuProfile">
     <img src="https://fakeimg.pl/250x50/" alt="logo">
-    <!-- links -->
-    <div class="links">
-        <button class="toggle-dark-mode" id="darkModeToggle">🌙</button>
-        <div class="notifications me-3">
-            <span class="badge">3</span>
-            <button class="notification-bell">🔔</button>
+    <div class="profile-container">
+      <img height="80" src="https://fakeimg.pl/250x250/" alt="Profile Avatar" class="profile-avatar"
+        onclick="toggleDropdown()" />
+
+      <div id="dropdown" class="dropdown hidden">
+        <div class="dropdown-header d-flex justify-content-start align-items-center">
+          <img height="80" src="https://fakeimg.pl/250x250/" alt="Profile Avatar" class="profile-avatar me-3" />
+          <div>
+            <p class="name">{{session('user')->nom}}<span class="badge">Pro</span></p>
+            <p class="email">{{session('user')->email}}</p>
+          </div>
         </div>
-        <div id="user-avatar" class="user-avatar">
-            <img src="https://fakeimg.pl/250x250/" alt="User  Avatar" class="avatar">
-            <div id="profile-dropdown" class="profile-dropdown">
-                <div class="profile-info">
-                    <span class="username">{{$utilisateur->nom}}</span>
-                </div>
-                <ul>
-                    <li><a href="#">My Profile</a></li>
-                    <li><a href="#">My Subscription</a></li>
-                    <li><a href="#">My Invoice <span class="badge pink-badge">4</span></a></li>
-                    <li><a href="#">Account Settings</a></li>
-                    <li class="sign-out"><a href="#">Sign Out</a></li>
-                </ul>
-            </div>
-        </div>
+        <ul class="dropdown-profile-menu">
+          <li><a href="#">My Profile</a></li>
+          <li><a href="#">My Subscription</a></li>
+          <li>
+            <a href="#">
+              My Invoice <span class="notification-badge">4</span>
+            </a>
+          </li>
+          <li><a href="#">Account Settings</a></li>
+          <li><a href="{{route('logout')}}">Sign Out</a></li>
+        </ul>
+      </div>
     </div>
-    <!-- menu bar -->
-    <div id="menu-bar">
+  </div>
+  <!-- menu bar -->
+  <div id="menu-bar">
     <span></span>
     <span></span>
     <span></span>
-    </div>
+  </div>
 </nav>
-
-
 <script>
-    const user_avatar = document.getElementById('user-avatar');
-    const profile_dropdown = document.getElementById('profile-dropdown');
-    const darkModeToggle = document.getElementById('darkModeToggle');
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdown");
+    dropdown.classList.toggle("hidden");
+  }
 
-    function showProfile() {
-        profile_dropdown.classList.toggle('showProfile');
-    }
-    user_avatar.addEventListener('click', ()=> {
-        showProfile();
-    })
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-    }
-    darkModeToggle.addEventListener('click', toggleDarkMode);
+  document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("dropdown");
+    const avatar = document.querySelector(".profile-avatar");
 
-    document.addEventListener('click', function(event) {
-    if (!user_avatar.contains(event.target) && !profile_dropdown.contains(event.target)) {
-        profile_dropdown.classList.remove('showProfile');
+    if (!dropdown.contains(event.target) && event.target !== avatar) {
+      dropdown.classList.add("hidden");
     }
-});
+  });
 </script>

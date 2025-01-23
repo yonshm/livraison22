@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Log;
+use App\Models\Role;
 use Exception;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
@@ -26,8 +27,10 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8|confirmed',
             ]);
             $user = $request->all();
+            $role = Role::where('nom_role', 'client')->first();
+            $user['id_role'] = $role->id;
             $user['password'] = Hash::make($request->password);
-        
+
             Utilisateur::create($user);
             return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
         } catch (Exception $err) {
@@ -51,7 +54,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended('admin/');
+            $user = Auth::user();
+            $id = $user->id_role;
+            $role = Role::find($id);
+            if ($role->nom_role === 'admin') {
+                return redirect()->intended('admin/');
+            }
+            if ($role->nom_role === 'client') {
+                return redirect()->intended("client/$user->id");
+            }
         }
 
         return back()->withErrors([

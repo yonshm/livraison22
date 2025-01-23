@@ -10,11 +10,7 @@
   <title>App | Livraison</title>
 </head>
 
-<<<<<<< HEAD:resources/views/loginSide.blade.php
-<body class="data-sidebartype="full"">
-=======
 <body class="data-sidebartype='full'">
->>>>>>> 47e1685f28247210cbe6af13e69862aae15f4c65:resources/views/auth/loginSide.blade.php
   <div id="main-wrapper" class="d-flex">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
       <div class="position-relative z-index-5">
