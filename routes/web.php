@@ -12,6 +12,7 @@ use App\Http\Controllers\ZoneController;
 use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
 
@@ -42,7 +43,16 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
         Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
         Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
         // End Route Coli ::::::::::::::::::::::::::::::::
-
+        
+        /// Stock Link ::::::::::::::::::::::::::
+        Route::get('/stock/liste', [ProduitController::class, 'index'])->name('clients.produit.index');
+        Route::get('/stock/create', [ProduitController::class, 'create'])->name('clients.produit.create');
+        // End Route Store ::::::::::::::::::::::::::::::::
+        /// Business Link ::::::::::::::::::::::::::
+        Route::get('/business/liste', [BusinessController::class, 'indexByClient'])->name('business.indexByClient');
+        Route::get('/business/create', [BusinessController::class, 'create'])->name('business.create');
+        Route::post('/business/liste', [BusinessController::class, 'store'])->name('business.store');
+        // End Business Store ::::::::::::::::::::::::::::::::
         // Route Bon_Ramassage :::::::::::::::::
         Route::get('/bon/ramassage', [Bon_ramassageController::class, 'index'])->name('bon_ramassage.index');
         Route::get('/bon/ramassage/create', [Bon_ramassageController::class, 'create'])->name('bon_ramassage.create');

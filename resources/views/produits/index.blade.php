@@ -1,37 +1,43 @@
 @extends('layouts.master')
 
-@section('title', 'Admin | Livraison')
+@section('title', 'Client | Livraison')
 
 @section('content')
 <div class="home">
-    @include('layouts.sideBarAdmin')
-    
-    <div class="main">
-        <div class="card right-side">
+      @include('layouts.sideBar')
+
+      <div class="main">
+        @include('layouts.nav')
+        <div class="card right-side mx-lg-3 my-lg-5">
             <div class="card-body">
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                 <h4 class="card-title mb-0">Liste des produits</h4>
-                <a href="{{route('produit.create')}}" class="btn btn-success mb-0">Ajouter</a>
+                <a href="{{route('clients.produit.create')}}" class="btn btn-success mb-0">Ajouter</a>
               </div>
-                <div class="table-responsive">
-                  <table id="row_group" class="table w-100 table-striped table-bordered display text-nowrap dataTable" aria-describedby="row_group_info">
-                    <thead>
-                      <!-- start row -->
-                      <tr class="text-center">
-                        <th>image Produit</th>
-                        <th>Nom Produit</th>
+              <div class="table-responsive">
+                <table id="row_group" class="table w-100 table-striped table-bordered display text-nowrap dataTable" aria-describedby="row_group_info">
+                  <thead>
+                    <!-- start row -->
+                    <tr class="text-center">
+                      <th>image Produit</th>
+                      <th>Nom Produit</th>
                         <th>Varainte</th>
                         <th>SKU</th>
                         <th>Quantite</th>
                         <th>Nom business</th>
                         <th>Status</th>
                         <th>Action</th>
-                    </tr>
-                    <!-- end row -->
-                  </thead>
-                  <tbody>
+                      </tr>
+                      <!-- end row -->
+                    </thead>
+                    <tbody>
+                      @if ($produits->isEmpty() )
+                        <tr class="text-center">
+                          <td colspan="8">Vous n'avez aucun produit</td>
+                        </tr>
+                      @else
                       @foreach ($produits as $p)
-                            <tr class="odd text-center">
+                      <tr class="odd text-center">
                                 <td class="text-center" style="vertical-align: middle">
                                     <img height="100" src="https://fakeimg.pl/450x450/" alt="{{$p->nom_produit}}">
                                 </td>
@@ -95,6 +101,7 @@
                               </td>
                             </tr>
                       @endforeach
+                      @endif
                   </tbody>
                     
                   </table>
@@ -106,6 +113,7 @@
     </div>
 </div>
 
-
+<script>
+</script>
 
 @endsection
