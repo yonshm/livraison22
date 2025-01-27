@@ -33,9 +33,9 @@
 <div class="home">
     @include('layouts.sideBar')
 
-    <div class="main">
+    <div class="main pb-5">
         @include('layouts.nav')
-        <div class="card right-side mx-lg-4 my-lg-5">
+        <div class="card right-side mx-lg-4 mt-5">
             <div id="ajouterColi" class="card-body p-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Liste des Businesses</h4>

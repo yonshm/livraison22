@@ -6,9 +6,9 @@
 <div class="home">
   @include('layouts.sideBar')
 
-  <div class="main">
+  <div class="main pb-5">
     @include('layouts.nav')
-    <div class="card right-side mx-lg-3 my-lg-5">
+    <div class="card right-side mx-lg-3 mt-5">
       <div class="card-body">
         <div class="mb-2">
           <h4 class="card-title mb-0">Colis attender de ramassage</h4>

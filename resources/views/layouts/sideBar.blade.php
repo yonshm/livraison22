@@ -298,8 +298,12 @@
   }
 
   @media (max-width: 720px) {
-    .sidebar {
-      display: none;
+    .sidebar , .sidebar li.profile {
+      z-index: 3;
+      left: -80px;
+    }
+    .open , .open li.profile{
+      left: 0;
     }
 
     .sidebar~.main {
@@ -316,6 +320,11 @@
       overflow-x: hidden
     }
 
+    .sidebar.open~.main {
+      left: 0;
+      width: 100%;
+    }
+
   }
 
   @media (max-width: 420px) {
@@ -326,7 +335,7 @@
 </style>
 {{-- ******************************************************** --}}
 
-<div class="sidebar">
+<div id="sidebar" class="sidebar">
   <div class="logo-details">
     <i class='bx bxl-codepen icon'></i>
     <div class="logo_name"></div>
@@ -367,16 +376,6 @@
       </div>
       <span class="tooltip">Gestion d'inventaire</span>
     </li>
-    <!-- <li class="dropdown">
-      <a href="#" class="dropdown-btn">
-        <i class='bx bxs-store'></i>
-        <span class="links_name">Gestion business</span>
-      </a>
-      <div class="dropdown-content">
-        <a href="{{ route('business.indexByClient') }}">Liste des business</a>
-      </div>
-      <span class="tooltip">Gestion business</span>
-    </li> -->
     <li>
       <a href="{{ route('business.indexByClient') }}">
         <i class='bx bxs-store'></i>
@@ -411,7 +410,7 @@
     {{-- End dropdown --}}
 
     <li>
-      <a href="#">
+      <a href="{{route('profile.index')}}">
         <i class='bx bx-cog'></i>
         <span class="links_name">Setting</span>
       </a>
@@ -504,5 +503,6 @@
         console.log("Error logging out:", error);
       });
   });
+
 
 </script>
