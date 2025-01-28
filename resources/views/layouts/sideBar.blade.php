@@ -34,8 +34,14 @@
     transition: all 0.5s ease;
   }
 
+  .sidebar .logo-details .icon::before {
+    color: var(--bs-primary);
+  }
+
   .sidebar .logo-details .logo_name {
-    color: #fff;
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--bs-primary);
     font-size: 20px;
     font-weight: 600;
     opacity: 0;
@@ -298,11 +304,15 @@
   }
 
   @media (max-width: 720px) {
-    .sidebar , .sidebar li.profile {
+
+    .sidebar,
+    .sidebar li.profile {
       z-index: 3;
       left: -80px;
     }
-    .open , .open li.profile{
+
+    .open,
+    .open li.profile {
       left: 0;
     }
 
@@ -327,6 +337,10 @@
 
   }
 
+  .open .logo-details i::before {
+    color: var(--bs-primary) !important;
+  }
+
   @media (max-width: 420px) {
     .sidebar li .tooltip {
       display: none;
@@ -338,7 +352,7 @@
 <div id="sidebar" class="sidebar">
   <div class="logo-details">
     <i class='bx bxl-codepen icon'></i>
-    <div class="logo_name"></div>
+    <div class="logo_name">App | Livraison</div>
     <i class='bx bx-menu' id="btn"></i>
   </div>
   <ul class="nav-list">
@@ -396,25 +410,21 @@
       <span class="tooltip">Bons et factures</span>
     </li>
 
-    <li class="dropdown">
-      <a href="#" class="dropdown-btn">
-        <i class='bx bx-file'></i>
-        <span class="links_name">Utilite</span>
+    <li>
+      <a href="#">
+        <i class='bx bx-support'></i>
+        <span class="links_name">Supports</span>
       </a>
-      <div class="dropdown-content">
-        <a href="#">Utilisateurs</a>
-        <a href="#">Supports</a>
-      </div>
-      <span class="tooltip">Utilite</span>
+      <span class="tooltip">Supports</span>
     </li>
     {{-- End dropdown --}}
 
     <li>
       <a href="{{route('profile.index')}}">
         <i class='bx bx-cog'></i>
-        <span class="links_name">Setting</span>
+        <span class="links_name">Settings</span>
       </a>
-      <span class="tooltip">Setting</span>
+      <span class="tooltip">Settings</span>
     </li>
     <li id="log-out" class="profile">
       <div class="profile-details">

@@ -1,3 +1,8 @@
+@extends('layouts.master')
+
+@section('title', 'Admin | Livraison')
+
+@section('content')
 <style>
     #formAjouterVille {
         width: 55%;
@@ -10,10 +15,11 @@
         background-color: #FFF;
         transition: 1s;
         visibility: hidden;
+        z-index: 2;
     }
 
     .showForm {
-        top: 50 !important;
+        top: 50px !important;
         visibility: visible !important;
     }
 
@@ -24,21 +30,22 @@
 
     }
 </style>
-@extends('layouts.master')
-
-@section('title', 'Admin | Livraison')
-
-@section('content')
 <div class="home">
     @include('layouts.sideBarAdmin')
-    <div class="main">
-        <div class="card right-side">
-            <div class="card-body">
-                <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div class="main pd-5">
+        @include('layouts.nav')
+
+        <div class="card right-side mx-lg-3 mt-5">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Liste des Villes</h4>
                     <span id="ajouterVille" class="btn btn-success mb-0">Ajouter</span>
                 </div>
-                <div class="table-responsive">
+            </div>
+        </div>
+        <div class="card-body mx-lg-3 mt-4">
+            <div>
+                <div class="table-responsive border rounded">
                     <table id="row_group" class="table w-100 table-striped table-bordered display text-nowrap dataTable"
                         aria-describedby="row_group_info">
                         <thead>
@@ -127,13 +134,12 @@
 
                     </table>
                 </div>
-                {{ $villes->links('pagination::bootstrap-5') }}
             </div>
+            {{ $villes->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>
 
-</div>
 
 
 <form id="formAjouterVille" action="{{ route('villes.store') }}" method="POST">
@@ -203,6 +209,7 @@
     const formAjouterVille = document.getElementById('formAjouterVille');
     ajouterVille.addEventListener('click', () => {
         formAjouterVille.classList.add('showForm')
+        console.log('showForm')
     })
     annuler.addEventListener('click', () => {
         formAjouterVille.classList.remove('showForm')
@@ -251,9 +258,5 @@
 
         return is_valid;
     }
-
-
-
-
 </script>
 @endsection
