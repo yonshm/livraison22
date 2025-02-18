@@ -14,7 +14,7 @@
     width: 78px;
     background: #f4f7fb;
     padding: 6px 14px;
-    z-index: 99;
+    z-index: 9;
     transition: all 0.5s ease;
   }
 
@@ -45,12 +45,14 @@
     font-size: 20px;
     font-weight: 600;
     opacity: 0;
-    transition: all 0.5s ease;
+    transition: all 0.7s ease;
+    visibility: hidden;
   }
 
   .sidebar.open .logo-details .icon,
   .sidebar.open .logo-details .logo_name {
     opacity: 1;
+    visibility: visible;
   }
 
   .sidebar .logo-details #btn {
@@ -357,7 +359,7 @@
   </div>
   <ul class="nav-list">
     <li>
-      <a href="#">
+      <a href="{{route('clients.index')}}">
         <i class='bx bx-grid-alt'></i>
         <span class="links_name">Dashboard</span>
       </a>
@@ -366,7 +368,7 @@
     <li>
       {{-- Start dropdown --}}
     <li class="dropdown">
-      <a href="#" class="dropdown-btn">
+      <a href="javascript:void(0)" class="dropdown-btn">
         <i class='bx bxs-package'></i>
         <span class="links_name">Colis</span>
       </a>
@@ -380,7 +382,7 @@
     </li>
 
     <li class="dropdown">
-      <a href="#" class="dropdown-btn">
+      <a href="javascript:void(0)" class="dropdown-btn">
         <i class='bx bxs-buildings'></i>
         <span class="links_name">Gestion d'inventaire</span>
       </a>
@@ -398,7 +400,7 @@
       <span class="tooltip">Gestion business</span>
     </li>
     <li class="dropdown">
-      <a href="#" class="dropdown-btn">
+      <a href="javascript:void(0)" class="dropdown-btn">
         <i class='bx bx-file'></i>
         <span class="links_name">Bons et factures</span>
       </a>
@@ -411,7 +413,7 @@
     </li>
 
     <li>
-      <a href="#">
+      <a href="">
         <i class='bx bx-support'></i>
         <span class="links_name">Supports</span>
       </a>

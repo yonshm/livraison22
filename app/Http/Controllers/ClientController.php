@@ -13,11 +13,15 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($user)
+    public function index()
     {
+        $user = session('user')->id;
         $clients = Utilisateur::with('client')->with('banque')->find($user);
 
-        return view('clients.index', compact('clients'));
+        $coliController = new ColiController();
+        $coli_info = $coliController->dashboardColis();
+        // dd($coli_info);
+        return view('clients.index', compact('clients', 'coli_info'));
 
     }
 

@@ -38,6 +38,8 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
+        $id_client = session('user')->id;
+
         $request->validate([
             'ref' => 'required|string|max:5',
             'nom_business' => 'required|string|max:255',
@@ -48,9 +50,10 @@ class BusinessController extends Controller
             'ref' => $request->ref,
             'nom_business' => $request->nom_business,
             'telephone' => $request->telephone,
+            'id_utilisateur' => $id_client,
         ]);
 
-        return redirect()->route('business.index')->with('success', 'Business added successfully');
+        return redirect()->route('business.indexByClient')->with('success', 'Business added successfully');
     }
 
     /**

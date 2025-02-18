@@ -166,8 +166,8 @@
 
   const btn_global_menu = document.getElementById('btn-global-menu');
   btn_global_menu.addEventListener('click', () => {
-    const sideBar = document.getElementById('sidebar').style.display = 'block';
     document.getElementById('btn').click();
+
   })
 
 </script>

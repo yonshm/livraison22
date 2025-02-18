@@ -62,7 +62,7 @@ class AuthController extends Controller
                 return redirect()->intended('admin/');
             }
             if ($role->nom_role === 'client') {
-                return redirect()->intended("client/$user->id");
+                return redirect()->intended("client/dashboard");
             }
         }
 

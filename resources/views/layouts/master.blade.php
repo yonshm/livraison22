@@ -25,13 +25,5 @@
     </main>
 
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"> </script>
-      {{-- <script>
-        const menu_bar = document.getElementById("menu-bar");
-        const sidebar = document.getElementById("sidebar");
-        menu_bar.addEventListener("click", () => {
-          sidebar.classList.toggle("show");
-          menu_bar.classList.toggle("close");
-        });
-        </script> --}}
 </body>
 </html>

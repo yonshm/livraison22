@@ -17,17 +17,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
-
     Route::prefix('client')->group(function () {
-
-        Route::get('/{user}', [ClientController::class, 'index'])->where('user', '[0-9]+')->name('clients.index');
+        
+        Route::get('/dashboard', [ClientController::class, 'index'])->name('clients.index');
         Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/dashboard/topville', [ColiController::class, 'getTopVilles'])->name('clients.getTopVilles');
         Route::post('/', [ClientController::class, 'store'])->name('clients.store');
         // Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
         Route::get('/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
@@ -35,15 +32,18 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
         Route::delete('/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
         // Start Route Coli ::::::::::::::::::::::::::::::::
-        Route::get('/client/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
-        Route::get('/client/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
-        Route::get('/client/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
-        Route::get('/client/colis/create', [ColiController::class, 'create'])->name('colis.create');
-        Route::post('/client/colis', [ColiController::class, 'store'])->name('colis.store');
-        Route::get('/client/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
-        Route::get('/client/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
-        Route::put('/client/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
-        Route::delete('/client/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
+        Route::get('/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
+        Route::get('/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
+        Route::get('/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
+        Route::get('/colis/create', [ColiController::class, 'create'])->name('colis.create');
+        Route::post('/colis', [ColiController::class, 'store'])->name('colis.store');
+        Route::get('/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
+        Route::get('/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
+        Route::put('/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
+        Route::delete('/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
+        // End Route Coli-ticket ::::::::::::::::::::::::::::::::
+        Route::get('/coli/{id}/ticket', [ColiController::class, 'ticketColi'])->where('id', '\d+')->name('coli.ticket');
+        // End Route Coli-ticket ::::::::::::::::::::::::::::::::
         // End Route Coli ::::::::::::::::::::::::::::::::
 
         /// Stock Link ::::::::::::::::::::::::::
@@ -67,6 +67,10 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
 Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
     Route::prefix('admin')->group(function () {
         /// utilisateur Link ::::::::::::::::::::::::::
+
+        Route::get('/dashboard',function (){
+            return view('admins.index');
+        })->name('dashboard.admin');
         Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur.index');
         Route::get('/utilisateur/attendeActivation', [UtilisateurController::class, 'attendeActivation'])->name('utilisateur.attendeActivation');
         Route::get('/utilisateur/create', [UtilisateurController::class, 'create'])->name('utilisateur.create');

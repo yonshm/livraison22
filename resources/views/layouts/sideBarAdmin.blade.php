@@ -34,6 +34,7 @@
     opacity: 0;
     transition: all 0.5s ease;
   }
+
   .sidebar .logo-details .icon::before {
     color: var(--bs-primary);
   }
@@ -357,7 +358,7 @@
   </div>
   <ul class="nav-list">
     <li>
-      <a href="#">
+      <a href="{{ route('dashboard.admin') }}">
         <i class='bx bx-grid-alt'></i>
         <span class="links_name">Dashboard</span>
       </a>
