@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    public $timestamps = false;
+    // public $timestamps = false;
 
     protected $fillable = ['id_type','nom_magasin','register_commerce','site_web','rank'];
 

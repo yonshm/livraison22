@@ -8,7 +8,6 @@
 
     <div class="main">
     @include('layouts.nav')
-
     <div class="card-body p-3">
       <div class="mb-3 d-flex justify-content-between align-items-center">
       <span id="btn-enregistrer" data-bs-toggle="modal" data-bs-target="#primary-header-modal"

@@ -136,6 +136,7 @@ Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
 // End Route Admin ::::::::::::::::::::::::::::::::
 Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
 
+Route::get('/', [AuthController::class, 'showLoginForm']);
 // Start Login ::::::::::::::::::::::::::::::::
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login');

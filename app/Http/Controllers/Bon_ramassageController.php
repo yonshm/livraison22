@@ -26,8 +26,7 @@ class Bon_ramassageController extends Controller
                 'coli' => function ($query) use ($id_client) {
                     $query->where('id_client', $id_client);
                 }
-            ])
-            ->get();
+            ])->orderByDesc('id')->get();
 
 
         return view('bons.ramassage.index', compact('bonsRamassages', 'noRamasse'));

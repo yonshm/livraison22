@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('bon_payement', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_moderateur')->constrained('utilisateurs');
+            $table->float('total');
+            $table->float('credit');
+            $table->dateTime('date');
+            $table->boolean('valide')->default(0)->comment('Non paye / paye');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('bon_payement');
     }
 };

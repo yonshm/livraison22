@@ -17,8 +17,8 @@ class CheckClientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $role = Role::where('nom_role', 'client')->get();
-        if (Auth::check() && Auth::user()->id_role === 1) {
+        $role = Role::where('nom_role', 'client')->first();
+        if (Auth::check() && Auth::user()->id_role === $role->id) {
             $request->session()->put('user', Auth::user());
             return $next($request);
         }

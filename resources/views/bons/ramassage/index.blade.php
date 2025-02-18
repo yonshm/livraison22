@@ -44,6 +44,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card right-side mx-lg-4 mt-4">
             <div class="table-responsive border rounded">
 
@@ -183,7 +184,6 @@
         </div>
     </div>
 </div>
-
 <div id="ajouterBonRamassage" class="mb-3 d-flex flex-column justify-content-between align-items-center gap-6">
     @if (count($noRamasse) > 0)
         <span class="badge  bg-info-subtle text-info py-2 px-3 mb-3"> ( {{count($noRamasse)}} ) Colis Pret la
