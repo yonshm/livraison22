@@ -199,7 +199,6 @@
 
 
       const colis = [];
-      // const villeRamasse = document.getElementById();
 
       checkboxes.forEach(checkbox => {
       if (checkbox.checked) {
@@ -214,7 +213,6 @@
         const ville = document.getElementById("ville").value;
         const adresse = document.getElementById("tb-adresse").value;
         const villeRamassage = [ville, adresse];
-        console.log(villeRamassage);
         fetch(`/client/bon/ramassage/`, {
         method: 'POST',
         headers: {

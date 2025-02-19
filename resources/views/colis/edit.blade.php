@@ -8,117 +8,131 @@
 
     <div class="main pb-5">
         @include('layouts.nav')
+
         <div class="card right-side mx-lg-3 mt-5">
             <div id="ajouterColi" class="card-body p-3">
-                <h4 class="card-title mb-3 text-center">Nouveau colis</h4>
-                <span>Rotour List colis</span>
-                <form class="mt-2" action="{{route('colis.store')}}" method="POST">
+                <h4 class="card-title mb-3 text-center">Modifier le colis</h4>
+                <span>Retour à la liste des colis</span>
+                <form class="mt-2" action="{{ route('colis.update', $coli->id) }}" method="POST">
                     @csrf
+                    @method('PUT') 
+
                     <div class="row">
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="inputDestinataire" class="form-label">Destinataire</label>
                                 <input type="text" class="form-control" name="destinataire" id="inputDestinataire"
-                                    placeholder="Destinataire">
+                                    placeholder="Destinataire" value="{{ old('destinataire', $coli->destinataire) }}">
                             </div>
                         </div>
 
+                        
                         <div class="col-md-6">
-                            <div class=" mb-3">
-                                <label for="inputTelephone" class="form-label">Telephone</label>
+                            <div class="mb-3">
+                                <label for="inputTelephone" class="form-label">Téléphone</label>
                                 <input type="text" class="form-control" name="telephone" id="inputTelephone" min="10"
-                                    max="15" placeholder="Telephone">
+                                    max="15" placeholder="Téléphone" value="{{ old('telephone', $coli->telephone) }}">
                             </div>
                         </div>
 
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Ville</label>
                                 <select id="slc-ville" class="form-select" name="id_ville"
                                     aria-label="Default select example">
-                                    <option selected="" value="-1">Ville</option>
+                                    <option value="-1">Ville</option>
                                     @foreach ($villes as $ville)
-                                        <option value="{{$ville->id}}">{{$ville->nom_ville}}</option>
+                                        <option value="{{ $ville->id }}" {{ old('id_ville', $coli->id_ville) == $ville->id ? 'selected' : '' }}>
+                                            {{ $ville->nom_ville }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Business</label>
                                 <select id="slc-business" class="form-select" name="id_business"
                                     aria-label="Default select example">
-                                    <option selected="" value="-1">Business</option>
+                                    <option value="-1">Business</option>
                                     @foreach ($business as $b)
-                                        <option value="{{$b->id}}">{{$b->nom_business}}</option>
+                                        <option value="{{ $b->id }}" {{ old('id_business', $coli->id_business) == $b->id ? 'selected' : '' }}>
+                                            {{ $b->nom_business }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="inputAdresse" class="form-label">Adresse</label>
                                 <input type="text" name="adresse" class="form-control" id="inputAdresse"
-                                    placeholder="Adresse">
+                                    placeholder="Adresse" value="{{ old('adresse', $coli->adresse) }}">
                             </div>
                         </div>
-
                         <div class="col-md-6">
-                            <div class=" mb-3">
+                            <div class="mb-3">
                                 <label for="inputMarchandise" class="form-label">Marchandise</label>
                                 <input type="text" name="marchandise" class="form-control" id="inputMarchandise"
-                                    placeholder="Marchandise">
+                                    placeholder="Marchandise" value="{{ old('marchandise', $coli->marchandise) }}">
                             </div>
-                        </div>
-
+                        </div>                        
                         <div class="col-md-6">
-                            <div class=" mb-3">
-                                <label for="inputQuantite" class="form-label">Quantite</label>
-                                <input type="number" class="form-control" id="inputQuantite" placeholder="Quantite">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class=" mb-3">
+                            <div class="mb-3">
                                 <label for="inputPrix" class="form-label">Prix</label>
                                 <input type="number" name="prix" step="0.01" class="form-control" id="inputPrix"
-                                    placeholder="Prix">
+                                    placeholder="Prix" value="{{ old('prix', $coli->prix) }}">
                             </div>
                         </div>
+
+                        
                         <div class="col-md-12">
                             <div class="col-md-6">
-                                <div class=" mb-3 ">
-                                    <label for="inputCommentaire" class="form-label">Commentaire ( Autre telephone, Date
-                                        de livraison,..)</label>
+                                <div class="mb-3">
+                                    <label for="inputCommentaire" class="form-label">Commentaire (Autre téléphone, Date de
+                                        livraison, ...)</label>
                                     <textarea class="form-control" name="commentaire" id="inputCommentaire" cols="20"
                                         rows="3"
-                                        placeholder="Commentaire ( Autre telephone, Date de livraison, ...)"></textarea>
+                                        placeholder="Commentaire (Autre téléphone, Date de livraison, ...)">{{ old('commentaire', $coli->commentaire) }}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div class="row my-1">
+                        
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" checked name="ouvrir" id="ouvrirColis">
+                                <input class="form-check-input" type="checkbox" name="ouvrir" id="ouvrirColis"
+                                    {{ old('ouvrir', $coli->ouvrir) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="ouvrirColis">
                                     Le colis peut être ouvert
                                 </label>
                             </div>
                         </div>
+
+                        
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="colisRemplacer">
+                                <input class="form-check-input" type="checkbox" checked name="colisRemplacer" id="colisRemplacer"
+                                    {{ old('colisRemplacer') }}>
                                 <label class="form-check-label" for="colisRemplacer">
-                                    Colis a Remplacer
+                                    Colis à Remplacer
                                 </label>
                             </div>
                         </div>
+
+                        
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" data-bs-toggle="modal" data-bs-target="#bs-produits-modal-xl" type="checkbox" value="" id="colisDuStock">
+                                <input class="form-check-input" type="checkbox" name="colisDuStock" id="colisDuStock"
+                                    {{ old('colisDuStock', $coli->colisDuStock) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="colisDuStock">
                                     Colis du Stock
                                 </label>
@@ -129,14 +143,16 @@
                         <div class="col-12 mb-2">
                             <div class="d-md-flex align-items-center">
                                 <div class="ms-auto d-flex mt-3 gap-10 mt-md-0">
+                                    
                                     <button type="reset" class="btn bg-danger-subtle text-danger hstack gap-6">
                                         <i class='bx bx-reset fs-7'></i>
-                                        Reinitialiser
+                                        Réinitialiser
                                     </button>
 
+                                    
                                     <button type="submit" class="btn btn-primary hstack gap-6">
                                         <i class='bx bx-save fs-7'></i>
-                                        Enregistrer
+                                        Enregistrer les modifications
                                     </button>
                                 </div>
                             </div>
@@ -144,68 +160,36 @@
                     </div>
                     <hr>
                     <div class="d-flex align-items-center justify-content-between mt-2">
+                        
                         <div class="mb-3">
                             <label for="inputAdresse" class="form-label">Frais de livraison: </label>
                             <span>
-                                <span id="fraisLivraison">00.00</span> DH
+                                <span id="fraisLivraison">{{ $coli->ville->frais_livraison ?? '00.00' }}</span> DH
                             </span>
                         </div>
+
+                        
                         <div class="mb-3">
                             <label for="inputAdresse" class="form-label">Frais de retour: </label>
                             <span>
-                                <span id="fraisRetour">00.00</span> DH
+                                <span id="fraisRetour">{{ $coli->ville->frais_retour ?? '00.00' }}</span> DH
                             </span>
                         </div>
+
+                        
                         <div class="mb-3">
                             <label for="inputAdresse" class="form-label">Frais de refus: </label>
                             <span>
-                                <span id="fraisRefus">00.00</span> DH
+                                <span id="fraisRefus">{{ $coli->ville->frais_refus ?? '00.00' }}</span> DH
                             </span>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+    
     </div>
 </div>
-
-<div class="modal fade" id="bs-produits-modal-xl" tabindex="-1" aria-labelledby="bs-produits-modal-xl" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="myLargeModalLabel">
-                    Les des produits Stock
-                </h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body mx-auto" id="modal-body">
-                    <table id="productTable">
-                        <thead>
-                            <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Variants</th>
-                            <th>Tout</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start" data-bs-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn bg-primary-subtle text-primary  waves-effect text-start" data-bs-dismiss="modal">
-                    Ajouter
-                </button>
-                </div>
-            </div>
-        </div>
-</div>
-            
-
-
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -219,7 +203,6 @@
             fetch('/villes/' + id)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     fraisLivraison.innerText = `${data[0].frais_livraison}.00`;
                     fraisRetour.innerText = `${data[0].frais_retour}.00`;
                     fraisRefus.innerText = `${data[0].frais_refus}.00`;
@@ -235,7 +218,6 @@
             const business = document.getElementById('slc-business').value.trim();
             const adresse = document.getElementById('inputAdresse').value.trim();
             const marchandise = document.getElementById('inputMarchandise').value.trim();
-            const quantite = document.getElementById('inputQuantite').value.trim();
             const prix = document.getElementById('inputPrix').value.trim();
 
             let valid = true;
@@ -265,11 +247,6 @@
             if (!marchandise) {
                 valid = false;
                 showError('inputMarchandise', 'La marchandise est requise.');
-            }
-
-            if (!quantite || isNaN(quantite) || quantite <= 0) {
-                valid = false;
-                showError('inputQuantite', 'La quantité doit être un nombre positif.');
             }
 
             if (!prix || isNaN(prix) || prix <= 0) {
@@ -307,27 +284,9 @@
                 error.remove();
             });
         }
-        
-        const p = document.getElementById('colisDuStock');
-        p.addEventListener('click', ()=>{
-            coliStock()
-        })
-        function coliStock(){
-            let dataStock = [] ;
-            fetch('{{ route("clients.list.produit") }}')
-            .then(res => res.json())
-            .then(data => modal_body(data) )
-            .catch(err => console.error(err))
-        }
-        function modal_body(listProduits){
-            // Iwork here Afficher list des produits :::::::::
-            const modal_body = document.getElementById('modal-body');
-            console.log(listProduits)
-        }
-
-
     });
 </script>
+
 
 
 {{-- <script>

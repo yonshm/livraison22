@@ -196,16 +196,19 @@
       Ticket
       </a>
       </li>
-      <li>
-      <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-      <i class='bx bxs-edit fs-7'></i>
-      Edit
+
+    <li class="edit-coli">
+      <a href="{{ route('colis.edit', $coli->id ) }}" class="dropdown-item d-flex align-items-center gap-3">
+          <i class='bx bxs-edit fs-7'></i>
+          Edit
       </a>
-      </li>
-      <li class="delete-coli">
-      <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-      <i class='bx bxs-trash fs-7'></i>
-      Delete</a>
+    </li>
+    <li class="delete-coli">
+        <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center gap-3">
+          <i class='bx bxs-trash fs-7'></i>
+          Delete
+        </a>
+        
       </li>
       </ul>
       </div>
@@ -229,9 +232,30 @@
 
       console.log("ID:", this.id);
       console.log(this.closest('tr'))
-      fetch(`client/colis/${id}`, { method: 'DELETE', headers: {} })
+      deleteColis(id)
     })
     });
+
+    const deleteColis = (id) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    fetch(`/client/colis/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message); 
+            alert('Colis deleted successfully');
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to delete colis');
+        });
+    };
   </script>
 
 @endsection

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('varaintes', function (Blueprint $table) {
             $table->id();
             $table->string('nom_varainte', 20);
-            $table->string('SKU', 255);
-            $table->integer('quantite');
+            $table->string('SKU', 255)->unique();
+            $table->integer('quantite')->default(0);
             $table->foreignId('id_produit')->constrained('produits');
             $table->boolean('status')->default(0);
             $table->foreignId('id_responsable')->nullable()->constrained('utilisateurs');

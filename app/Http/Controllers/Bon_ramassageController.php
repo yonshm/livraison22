@@ -39,7 +39,12 @@ class Bon_ramassageController extends Controller
     {
         $id_client = session('user')->id;
         $villes = Ville::all();
-        $noRamasse = Coli::where('id_client', $id_client)->whereNull('bon_ramassage')->where('pret_preparation', 1)->with('ville')->with('business')->get();
+        $noRamasse = Coli::where('id_client', $id_client)
+            ->whereNull('bon_ramassage')
+            ->where('pret_preparation', 1)
+            ->with('ville')
+            ->with('business')
+            ->get();
         return view('bons.ramassage.create', compact('noRamasse', 'villes'));
     }
     public function ColiAttendeBonRamassage()
@@ -72,9 +77,7 @@ class Bon_ramassageController extends Controller
             'adresse_ramassage' => $villeRamassage[1],
         ];
         Bon_ramassage::create($bonRamassage);
-
         $bon = Bon_ramassage::where('ref_ramassage', $ref_ramassage)->first();
-
         foreach ($colis as $idColi) {
             $id = intval($idColi);
             $coli = Coli::find($id);
@@ -85,7 +88,7 @@ class Bon_ramassageController extends Controller
             }
         }
         return response()->json([
-            'message' => 'Data received successfully!',
+            'message' => 'Votre bon a été créé avec succès',
             'colis' => $bonRamassage,
         ]);
     }

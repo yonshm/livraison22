@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produit extends Model
 {
-    public $timestamps = false;
-    protected $fillable = ['nom_produit','note','status','id_client','id_business'];
+    // public $timestamps = false;
+    protected $fillable = ['nom_produit','SKU','quantite','note','status','id_client','id_business','status','id_responsable'];
 
     public function client(){
         return $this->hasOne(Client::class, 'id_client');

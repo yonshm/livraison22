@@ -8,6 +8,12 @@
 
     <div class="main pb-5">
     @include('layouts.nav')
+    <div class="card right-side mx-lg-3 mt-3">
+      <div class="card-body p-3">
+        <h4 class="card-title mb-0">Colis Non Expedies</h4>
+      </div>
+    </div>
+
     <div class="mx-lg-3">
       <div class="acc-filter">
       <div class="colis-filter">
@@ -96,11 +102,6 @@
         </div>
         </div>
       </div>
-      </div>
-    </div>
-    <div class="card right-side mx-lg-3 mt-3">
-      <div class="card-body p-3">
-      <h4 class="card-title mb-0">Colis Non Expedies</h4>
       </div>
     </div>
 

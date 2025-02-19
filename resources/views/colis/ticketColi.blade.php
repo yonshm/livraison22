@@ -143,7 +143,7 @@
             <!-- <span id="senderText">Akchar Beauty Cosmetics</span> -->
         </p>
         <p>
-            <span id="senderAddressText"> {{$coli->ville->nom_ville}} - {{$coli->adresse_ramassage ?? 'No adresse'}} -
+            <span id="senderAddressText"> {{$coli->ville->nom_ville}} - {{$coli->Bon_ramassage->adresse_ramassage ?? 'No adresse'}} -
             </span>
             <span class="bold" id="senderPhoneText"> {{$coli->business->telephone ?? 'No telephone'}}</span>
         </p>

@@ -13,6 +13,7 @@ use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\DashboardClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
@@ -24,7 +25,7 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
         Route::get('/dashboard', [ClientController::class, 'index'])->name('clients.index');
         Route::get('/create', [ClientController::class, 'create'])->name('clients.create');
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-        Route::get('/dashboard/topville', [ColiController::class, 'getTopVilles'])->name('clients.getTopVilles');
+        Route::get('/dashboard/topville', [DashboardClientController::class, 'getTopVilles'])->name('clients.getTopVilles');
         Route::post('/', [ClientController::class, 'store'])->name('clients.store');
         // Route::get('/client/{id}', [ClientController::class, 'show'])->name('clients.show');
         Route::get('/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
@@ -36,9 +37,9 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
         Route::get('/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
         Route::get('/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
         Route::get('/colis/create', [ColiController::class, 'create'])->name('colis.create');
-        Route::post('/colis', [ColiController::class, 'store'])->name('colis.store');
         Route::get('/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
         Route::get('/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
+        Route::post('/colis', [ColiController::class, 'store'])->name('colis.store');
         Route::put('/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
         Route::delete('/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
         // End Route Coli-ticket ::::::::::::::::::::::::::::::::
@@ -48,7 +49,10 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
 
         /// Stock Link ::::::::::::::::::::::::::
         Route::get('/stock/liste', [ProduitController::class, 'index'])->name('clients.produit.index');
+        Route::get('/stock/produits', [ProduitController::class, 'getProducts'])->name('clients.list.produit');
         Route::get('/stock/create', [ProduitController::class, 'create'])->name('clients.produit.create');
+        Route::post('/stock', [ProduitController::class, 'store'])->name('clients.produit.store');
+        Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('clients.produit.destroy');
         // End Route Store ::::::::::::::::::::::::::::::::
         /// Business Link ::::::::::::::::::::::::::
         Route::get('/business/liste', [BusinessController::class, 'indexByClient'])->name('business.indexByClient');

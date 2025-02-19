@@ -92,7 +92,7 @@
                                                             </td>
                                                             <td>
                                                                 <h6 class="fw-semibold mb-0 fs-4">
-                                                                    {{$bonRamassage->ville->nom_ville}}
+                                                                    {{$bonRamassage->ville->nom_ville }} - {{ $bonRamassage->adresse_ramassage}}
                                                                 </h6>
                                                             </td>
                                                             <td>

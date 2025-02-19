@@ -8,7 +8,98 @@
 
   <div class="main pb-5">
     @include('layouts.nav')
-    <div class="card right-side mx-lg-3 mt-5">
+       <div class="mx-lg-3">
+      <div class="acc-filter">
+      <div class="colis-filter">
+        <div class="accordion mt-3" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            Filtrer
+          </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <form class="mt-4">
+            <div class="form-group">
+              <div class="row">
+              <div class="col-md-4">
+                <div class="">
+                <input type="text" class="form-control" placeholder="Rechercher coli">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-3">
+                <select class="select2 form-control">
+                  <option value="">Etat</option>
+                  <option value="">Option1</option>
+                  <option value="">Option1</option>
+                </select>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-4">
+                <div class="mb-3">
+                <select class="select2 form-control">
+                  <option value="">Status</option>
+                  <option value="">Option1</option>
+                  <option value="">Option1</option>
+                </select>
+                </div>
+              </div>
+              </div>
+
+
+
+              <div class="row">
+              <div class="col-md-4">
+                <select class="select2 form-control">
+                <option value="">Livreur</option>
+                <option value="">Option1</option>
+                <option value="">Option1</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <select class="select2 form-control">
+                <option value="">Dernier mise a jour</option>
+                <option value="">Option1</option>
+                <option value="">Option1</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <input type="date" class="form-control" value="2025-01-03">
+              </div>
+              </div>
+            </div>
+            <div class="form-actions mt-3">
+              <div class="d-flex justify-content-end gap-6">
+              <button type="submit" class="btn btn-primary ">
+                Submit
+              </button>
+              <button type="reset" class="btn bg-danger-subtle text-danger ">
+                Reset
+              </button>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+
+          </form>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="card right-side mx-lg-3 mt-3">
       <div class="card-body p-3">
         <div class="d-flex justify-content-between align-items-center">
           <h4 class="card-title mb-0">Liste des produits</h4>
@@ -16,6 +107,7 @@
         </div>
       </div>
     </div>
+
     <div class="card-body mx-lg-3 mt-4">
       <div class="table-responsive border rounded">
         <table id="row_group" class="table w-100 table-striped table-bordered display text-nowrap dataTable"
@@ -46,29 +138,41 @@
       <img height="100" src="https://fakeimg.pl/450x450/" alt="{{$p->nom_produit}}">
       </td>
       <td class="text-center" style="vertical-align: middle">{{$p->nom_produit}}</td>
-      <td style="vertical-align: middle">
-      <ul>
-      @foreach ($p->varainte as $v)
-      <li class="py-1"> {{$v->nom_varainte}}</li>
-    @endforeach
-      </ul>
-      </td>
-      <td style="vertical-align: middle">
-      <ul>
-      @foreach ($p->varainte as $v)
-      <li class="py-1"> {{$v->SKU}}</li>
-    @endforeach
-      </ul>
-      </td>
-      <td style="vertical-align: middle">
-      <ul>
-      @foreach ($p->varainte as $v)
-      <li class="py-1"> {{$v->quantite}}</li>
-    @endforeach
-      </ul>
-      </td>
-      <td style="vertical-align: middle">{{$p->business->nom_business}}</td>
-      <td class="text-center" style="vertical-align: middle">{{ $p->status ? 'Recu' : 'No Recu' }}</td>
+      @if ($p->varainte->isEmpty())
+      <td style="vertical-align: middle">Ce produit n'a pas de variante </td>
+      <td style="vertical-align: middle"> {{ $p->SKU }} </td>
+      <td style="vertical-align: middle"> {{ $p->quantite }} </td>
+        @else
+          <td style="vertical-align: middle"> <ul>
+              @foreach ($p->varainte as $v)
+                <li class="py-1"> {{$v->nom_varainte}}</li>
+              @endforeach
+          </ul> </td>
+          <td style="vertical-align: middle"> <ul>
+              @foreach ($p->varainte as $v)
+              <li class="py-1"> {{$v->SKU}}</li>
+              @endforeach
+          </ul> </td>
+          <td style="vertical-align: middle"> <ul>
+                @foreach ($p->varainte as $v)
+                  <li class="py-1"> {{$v->quantite}}</li>
+                @endforeach
+            </ul> </td>
+            @endif
+            
+            <td style="vertical-align: middle">{{$p->business->nom_business}}</td>
+            @if ($p->varainte->isEmpty())
+              <td class="text-center" style="vertical-align: middle">
+                <span class="badge {{ $p->status ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">{{ $p->status ? 'Recu' : 'No Recu' }}</span>
+              </td>
+            @else
+              <td style="vertical-align: middle"> <ul>
+                    @foreach ($p->varainte as $v)
+                      <li class="py-1"> {{$v->status}}</li>
+                    @endforeach
+                </ul> </td>
+            
+            @endif
       <td class="text-center" style="vertical-align: middle">
       <div class="dropdown dropstart">
       <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown"
@@ -98,21 +202,12 @@
         </a>
       </li>
       <li>
-        <form action="{{route('produit.destroy', $p->id)}}" method="POST">
+        <form action="{{route('clients.produit.destroy', $p->id)}}" method="POST">
         @method('DELETE')
         @csrf
         <button class="dropdown-item d-flex align-items-center gap-3">
 
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M4 7l16 0" />
-        <path d="M10 11l0 6" />
-        <path d="M14 11l0 6" />
-        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-        </svg>
+        <i class='bx bxs-trash fs-7'></i>
         Delete
         </button>
         </form>

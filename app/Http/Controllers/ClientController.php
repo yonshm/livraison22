@@ -18,9 +18,8 @@ class ClientController extends Controller
         $user = session('user')->id;
         $clients = Utilisateur::with('client')->with('banque')->find($user);
 
-        $coliController = new ColiController();
-        $coli_info = $coliController->dashboardColis();
-        // dd($coli_info);
+        $dashboard = new DashboardClientController();
+        $coli_info = $dashboard->dashboardColis();
         return view('clients.index', compact('clients', 'coli_info'));
 
     }
