@@ -12,7 +12,7 @@
             <div id="ajouterColi" class="card-body p-3">
                 <h4 class="card-title mb-3 text-center">Nouveau colis</h4>
                 <span>Rotour List colis</span>
-                <form class="mt-2" action="{{route('colis.store')}}" method="POST">
+                <form action="" class="mt-2" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -118,7 +118,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" data-bs-toggle="modal" data-bs-target="#bs-produits-modal-xl" type="checkbox" value="" id="colisDuStock">
+                                <input class="form-check-input" type="checkbox" value="" id="colisDuStock">
                                 <label class="form-check-label" for="colisDuStock">
                                     Colis du Stock
                                 </label>
@@ -163,52 +163,37 @@
                             </span>
                         </div>
                     </div>
+                        <div id="produits-modal" class="card-body col-lg-8 py-4 px-7">
+                            <div class="modal-header align-items-center mb-3">
+                                <h4 class="modal-title">
+                                    Lites des produit stock
+                                </h4>
+                                <button id="close-produits-modal" type="button" class="btn-close"></button>
+                            </div>
+                            <div class="mx-auto w-100" id="modal-body">
+                                <table id="productTable">
+                                    
+                                </table>
+                            </div>
+                            <div>
+                                <button id="valideProduiStock" class="btn btn-primary hstack" >ajouter</button>
+                            </div>
+                        </div>
+                    
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="bs-produits-modal-xl" tabindex="-1" aria-labelledby="bs-produits-modal-xl" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="myLargeModalLabel">
-                    Les des produits Stock
-                </h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body mx-auto" id="modal-body">
-                    <table id="productTable">
-                        <thead>
-                            <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Variants</th>
-                            <th>Tout</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start" data-bs-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn bg-primary-subtle text-primary  waves-effect text-start" data-bs-dismiss="modal">
-                    Ajouter
-                </button>
-                </div>
-            </div>
-        </div>
-</div>
-            
+     
 
 
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let produitStock = [];
+
         const slc_ville = document.getElementById('slc-ville');
         const fraisLivraison = document.getElementById('fraisLivraison');
         const fraisRetour = document.getElementById('fraisRetour');
@@ -228,15 +213,18 @@
         })
         const form = document.querySelector('form');
         form.addEventListener('submit', function(event) {
+            event.preventDefault();
             clearPreviousErrors();
             const destinataire = document.getElementById('inputDestinataire').value.trim();
             const telephone = document.getElementById('inputTelephone').value.trim();
+            const commentaire = document.getElementById('inputCommentaire').value.trim();
             const ville = document.getElementById('slc-ville').value.trim();
             const business = document.getElementById('slc-business').value.trim();
             const adresse = document.getElementById('inputAdresse').value.trim();
             const marchandise = document.getElementById('inputMarchandise').value.trim();
             const quantite = document.getElementById('inputQuantite').value.trim();
             const prix = document.getElementById('inputPrix').value.trim();
+            const ouvrirColis = document.getElementById('ouvrirColis').checked;
 
             let valid = true;
             if (!destinataire) {
@@ -277,8 +265,33 @@
                 showError('inputPrix', 'Le prix doit être un nombre positif.');
             }
       
-            if (!valid) {
-                event.preventDefault(); 
+            if (valid) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                modal.classList.remove("afficheModel")
+                const payload = {dataColi : {
+                    'destinataire' : destinataire,
+                    'telephone' : telephone,
+                    'id_ville' : ville,
+                    'adresse' : adresse,
+                    'prix' : prix,
+                    'commentaire' : commentaire,
+                    'marchandise' : marchandise,
+                    'id_business' : business,
+                    'ouvrir' : ouvrirColis,
+
+                } ,coli_stock : produitStock}
+                fetch("{{ route('colis.store') }}", {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err))
             }
         });
 
@@ -309,11 +322,50 @@
         }
         
         const p = document.getElementById('colisDuStock');
-        p.addEventListener('click', ()=>{
-            coliStock()
+        const modal = document.getElementById('produits-modal');
+        document.getElementById('close-produits-modal').addEventListener('click', ()=>{
+            modal.classList.toggle("afficheModel");
+            p.checked = !p.checked;
+            coliStock();
         })
+        p.addEventListener('change', ()=>{
+            modal.classList.toggle("afficheModel");
+            coliStock();
+
+        })
+        //Start function to Get des Produits in Stock Modal :::::::::::::::::::::::::::::::
+        document.getElementById('valideProduiStock').addEventListener('click', function() {
+            produitStock = [];
+            const rows = document.querySelectorAll('table tbody tr');
+            rows.forEach(row => {
+            let sku = row.cells[1].textContent.trim();
+            let qtePro = parseInt(row.cells[2].textContent);
+            let input = row.querySelector('input'); 
+
+            if (input) {
+                let qte = input.value.trim();
+                if (qte === "") {
+                    console.log(`Quantity for SKU ${sku} is empty. Skipping.`);
+                } else {
+                    let qteInt = parseInt(qte);
+                    if (isNaN(qteInt) || qteInt <= 0) {
+                        console.log(`Invalid quantity for SKU ${sku}. Must be a number greater than 0. Skipping.`);
+                    } else {
+                        produitStock.push({
+                        sku: sku,
+                        quantite: (qteInt > qtePro) ? qtePro : qteInt
+                        });
+                    }
+                }
+            }
+            });
+
+            p.checked = !p.checked;
+            modal.classList.remove("afficheModel");
+        });
+        //End function to Get des Produits in Stock Modal :::::::::::::::::::::::::::::::
+
         function coliStock(){
-            let dataStock = [] ;
             fetch('{{ route("clients.list.produit") }}')
             .then(res => res.json())
             .then(data => modal_body(data) )
@@ -321,9 +373,52 @@
         }
         function modal_body(listProduits){
             // Iwork here Afficher list des produits :::::::::
-            const modal_body = document.getElementById('modal-body');
-            console.log(listProduits)
-        }
+            const tbody = document.getElementById('modal-body');
+            let trs = listProduits.map(p => {
+            if (p.varainte && p.varainte.length > 0) {
+                return p.varainte.map(v => {
+                                return `
+                                <tr>
+                                    <td> ${v.nom_varainte} </td> <!-- Display the specific type -->
+                                    <td> ${v.SKU} </td>
+                                    <td> ${v.quantite} </td>
+                                    <td class="col-2"> 
+                                        <input class="col-8" type="number" >
+                                    </td>
+                                </tr>
+                                `;
+                            }).join('');
+            } else {
+                    return `
+                    <tr>
+                        <td> ${p.nom_produit} </td> <!-- Display the product name -->
+                        <td> ${p.SKU} </td>
+                        <td> ${p.quantite} </td>
+                        <td class="col-2"> 
+                            <input class="col-8" type="number" >
+                        </td>
+                    </tr>
+                    `;
+                }
+            }).join('');
+                tbody.innerHTML = `
+                            <div class="table-responsive mb-4 border rounded-1">
+                                <table class="table text-nowrap mb-0 align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th>SKU</th>
+                                            <th>Quantite</th>
+                                            <th>Tout</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${ trs }
+                                            </tbody>
+                                </table>
+                            </div>
+                `;
+            }
 
 
     });

@@ -78,37 +78,52 @@ class ColiController extends Controller
     {
         $id_client = session('user')->id;
         $request->validate([
-            'destinataire' => 'required|string|max:255',
-            'telephone' => 'required|string|max:20',
-            'id_ville' => 'required|integer',
-            'adresse' => 'required|string|max:255',
-            'prix' => 'required|numeric',
-            'commentaire' => 'nullable|string',
-            'marchandise' => 'required|string|max:255',
-            'id_business' => 'required|exists:businesses,id',
+            'dataColi.destinataire' => 'required|string|max:255',
+            'dataColi.telephone' => 'required|string|max:20',
+            'dataColi.id_ville' => 'required|integer',
+            'dataColi.adresse' => 'required|string|max:255',
+            'dataColi.prix' => 'required|numeric',
+            'dataColi.commentaire' => 'nullable|string',
+            'dataColi.marchandise' => 'required|string|max:255',
+            'dataColi.id_business' => 'required|exists:businesses,id',
+            'coli_stock' => 'nullable|array',
+            'coli_stock.*.sku' => 'required|string',
+            'coli_stock.*.quantity' => 'required|integer|min:1',
         ]);
-        if ($request->filled('ouvrir')) {
-            $request['ouvrir'] = 1;
-        } else {
-            $request['ouvrir'] = 0;
-        }
-
+        
         $data = $request->all();
-
-        $fromCity = Ville::find($request->id_ville)->nom_ville[0] ?? 'X';
-        $toCity = Ville::find($request->id_ville)->nom_ville[0] ?? 'X';
-
-
+        
+        $dataColi = $data['dataColi'];
+        $coliStock = $data['coli_stock'] ?? [];
+        
+        $fromCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
+        $toCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
+    
         $track_number = $this->trackNumber($id_client, $fromCity, $toCity);
+        
+        $dataColi['track_number'] = $track_number;
+        $dataColi['date_creation'] = now()->toDateString();
+        $dataColi['id_client'] = $id_client;
+        $dataColi['bon_ramassage'] = null; 
 
-        $data['track_number'] = $track_number;
-        $data['date_creation'] = now()->toDateString();
-        $data['id_client'] = $id_client;
-        $data['bon_ramassage'] = null;
+        $coli = Coli::create($dataColi);
 
-        Coli::create($data);
 
-        return redirect()->route('colis.listeColis')->with('success', 'Coli created successfully.');
+        // I work here :::::::::::::::::::
+        // Next step make table ColiStock to add colii stock ::::::::::::::::::: 
+
+        // if (!empty($coliStock)) {
+        //     foreach ($coliStock as $item) {
+        //         ColiStock::create([
+        //             'coli_id' => $coli->id,
+        //             'sku' => $item['sku'],
+        //             'quantity' => $item['quantity'],
+        //         ]);
+        //     }
+        // }
+
+        return response()->json(['success' => true, 'data' => $coli], 200);
+
     }
 
     public function show(string $id)
