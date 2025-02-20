@@ -55,7 +55,7 @@ class ProduitController extends Controller
             
             return response()->json($produits);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             return response()->json(['error' => 'Une erreur est survenue lors de la récupération des produits'], 500);
         }
