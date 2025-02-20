@@ -50,7 +50,7 @@ class ProduitController extends Controller
             ->get();
             
             if ($produits->isEmpty()) {
-                return response()->json(['message' => 'No products found'], 404);
+                return response()->json(['message' => 'No produits'], 404);
             }
             
             return response()->json($produits);
