@@ -39,9 +39,14 @@ class ProduitController extends Controller
             
             
             $produits = Produit::where(['status' => 1, 'id_client' => $id_client])
-            ->where('quantite', '>', 0)
+            ->where(function($query) {
+                $query->where('quantite', '>', 0)
+                    ->orWhereNull('quantite');
+            })
             ->whereNotNull('id_responsable')
-            ->with('varainte')
+            ->with(['varainte' => function($v) {
+                $v->where('quantite', '>', 0);
+            }])
             ->get();
             
             if ($produits->isEmpty()) {

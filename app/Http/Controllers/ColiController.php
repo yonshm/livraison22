@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Business;
 use Carbon\Carbon;
 use App\Models\Coli;
+use App\Models\Coli_stock;
 use App\Models\General;
+use App\Models\Produit;
 use App\Models\Status;
+use App\Models\Varainte;
 use App\Models\Ville;
 use App\Models\Zone;
 use Illuminate\Http\Request;
@@ -74,57 +77,98 @@ class ColiController extends Controller
         $track_number = "$fromCity$toCity$currentTime$idColi";
         return $track_number;
     }
+
     public function store(Request $request)
     {
         $id_client = session('user')->id;
-        $request->validate([
-            'dataColi.destinataire' => 'required|string|max:255',
-            'dataColi.telephone' => 'required|string|max:20',
-            'dataColi.id_ville' => 'required|integer',
-            'dataColi.adresse' => 'required|string|max:255',
-            'dataColi.prix' => 'required|numeric',
-            'dataColi.commentaire' => 'nullable|string',
-            'dataColi.marchandise' => 'required|string|max:255',
-            'dataColi.id_business' => 'required|exists:businesses,id',
-            'coli_stock' => 'nullable|array',
-            'coli_stock.*.sku' => 'required|string',
-            'coli_stock.*.quantity' => 'required|integer|min:1',
-        ]);
-        
-        $data = $request->all();
-        
-        $dataColi = $data['dataColi'];
-        $coliStock = $data['coli_stock'] ?? [];
-        
-        $fromCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
-        $toCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
-    
-        $track_number = $this->trackNumber($id_client, $fromCity, $toCity);
-        
-        $dataColi['track_number'] = $track_number;
-        $dataColi['date_creation'] = now()->toDateString();
-        $dataColi['id_client'] = $id_client;
-        $dataColi['bon_ramassage'] = null; 
+        try{
+            $request->validate([
+                'destinataire' => 'required|string|max:255',
+                'telephone' => 'required|string|max:20',
+                'id_ville' => 'required|integer',
+                'id_business' => 'required|exists:businesses,id',
+                'adresse' => 'required|string|max:255',
+                'marchandise' => 'required|string|max:255',
+                'prix' => 'required|numeric',
+                'commentaire' => 'nullable|string',
+                'ouvrir' => 'nullable|boolean',
+                'variant' => 'nullable|array',
+                'variant.*.SKU' => 'nullable|string',
+                'variant.*.quantity' => 'nullable|integer|min:1',
+            ]);
 
-        $coli = Coli::create($dataColi);
+            $dataColi = $request->only([
+                    'destinataire', 'telephone', 'id_ville', 'id_business', 'adresse', 'marchandise', 'prix', 'commentaire'
+                ]);
 
+            $fromCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
+            $toCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
+            $track_number = $this->trackNumber($id_client, $fromCity, $toCity);
 
-        // I work here :::::::::::::::::::
-        // Next step make table ColiStock to add colii stock ::::::::::::::::::: 
+            $request->has('ouvrir') ? $dataColi['ouvrir'] = 1 : $dataColi['ouvrir'] = 0;
+            $dataColi['track_number'] = $track_number;
+            $dataColi['date_creation'] = now()->toDateString();
+            $dataColi['id_client'] = $id_client;
+            $dataColi['bon_ramassage'] = null;
 
-        // if (!empty($coliStock)) {
-        //     foreach ($coliStock as $item) {
-        //         ColiStock::create([
-        //             'coli_id' => $coli->id,
-        //             'sku' => $item['sku'],
-        //             'quantity' => $item['quantity'],
-        //         ]);
-        //     }
-        // }
+            $coli = Coli::create($dataColi);
 
-        return response()->json(['success' => true, 'data' => $coli], 200);
-
+            if ($request->has('produit') && !empty($request->produit) && $request->produit != null) {
+                $produit = $request->input('produit');
+                $coli->coli_type = "stock";
+                $coli->save();
+                foreach ($produit as $key => $quantite) {
+                    if (isset($key) && isset($quantite)) {
+                        $pro = Produit::where('SKU', $key)->first();
+                        if ($pro) {
+                            Coli_stock::create([
+                                'id_coli' => $coli->id,
+                                'SKU' => $key,
+                                'quantite' => (int) $quantite <= $pro->quantite ? (int)$quantite : $pro->quantite,
+                            ]);
+                            if ((int)$quantite <= $pro->quantite) {
+                                $pro->quantite -= (int) $quantite;
+                            }else{
+                                $pro->quantite = 0;
+                            }
+                                $pro->save();
+                        }
+                    }
+                }
+            }
+            if ($request->has('variant') && !empty($request->variant) && $request->variant != null) {
+                $variant = $request->input('variant');
+                $coli->coli_type = "stock";
+                $coli->save();
+                foreach ($variant as $key => $quantite) {
+                    if (isset($key) && isset($quantite)) {
+                        $var = Varainte::where('SKU', $key)->first();
+                        if ($var) {
+                            Coli_stock::create([
+                                'id_coli' => $coli->id,
+                                'SKU' => $key,
+                                'quantite' => (int) $quantite <= $var->quantite ? (int)$quantite : $var->quantite,
+                            ]);
+                            
+                            if ((int)$quantite <= $var->quantite) {
+                                $var->quantite -= (int) $quantite ;
+                            }else{
+                                $var->quantite = 0;
+                            }
+                                $var->save();
+                        }
+                    }
+                }
+            }
+            return redirect()->route('colis.create');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
+
 
     public function show(string $id)
     {
@@ -170,7 +214,6 @@ class ColiController extends Controller
         } else {
             $request['ouvrir'] = 0;
         }
-        // dd($request->all());
         $coli = Coli::findOrFail($id);
 
         $fromCity = Ville::find($request->id_ville)->nom_ville[0] ?? 'X';

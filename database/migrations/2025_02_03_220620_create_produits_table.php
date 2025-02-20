@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom_produit', 30);
             $table->string('SKU', 255)->unique();
-            $table->integer('quantite')->default(0);
+            $table->integer('quantite')->nullable()->default(0);
             $table->string('note', 255)->nullable()->default('');
             $table->boolean('status')->default(0)->comment('en cours / recu');
             $table->foreignId('id_client')->constrained('utilisateurs');

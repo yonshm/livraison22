@@ -12,7 +12,7 @@
             <div id="ajouterColi" class="card-body p-3">
                 <h4 class="card-title mb-3 text-center">Nouveau colis</h4>
                 <span>Rotour List colis</span>
-                <form action="" class="mt-2" method="POST">
+                <form action="{{ route('colis.store') }}" class="mt-2" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -176,7 +176,7 @@
                                 </table>
                             </div>
                             <div>
-                                <button id="valideProduiStock" class="btn btn-primary hstack" >ajouter</button>
+                                <button id="valideProduiStock" type="button" class="btn btn-primary hstack" >ajouter</button>
                             </div>
                         </div>
                     
@@ -213,7 +213,6 @@
         })
         const form = document.querySelector('form');
         form.addEventListener('submit', function(event) {
-            event.preventDefault();
             clearPreviousErrors();
             const destinataire = document.getElementById('inputDestinataire').value.trim();
             const telephone = document.getElementById('inputTelephone').value.trim();
@@ -265,35 +264,27 @@
                 showError('inputPrix', 'Le prix doit être un nombre positif.');
             }
       
-            if (valid) {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                modal.classList.remove("afficheModel")
-                const payload = {dataColi : {
-                    'destinataire' : destinataire,
-                    'telephone' : telephone,
-                    'id_ville' : ville,
-                    'adresse' : adresse,
-                    'prix' : prix,
-                    'commentaire' : commentaire,
-                    'marchandise' : marchandise,
-                    'id_business' : business,
-                    'ouvrir' : ouvrirColis,
-
-                } ,coli_stock : produitStock}
-                fetch("{{ route('colis.store') }}", {
-                    method : 'POST',
-                    headers : {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(err => console.log(err))
+            if (!valid) {
+                event.preventDefault();
             }
         });
+
+        document.getElementById('valideProduiStock').addEventListener('click', function() {
+            let valid = true;
+            const rows = document.querySelectorAll('table tbody tr');
+            rows.forEach(row => {
+                if(row.children[2].textContent.trim()){
+                // I work here :::::::::
+                    console.log()
+                }
+            })
+            if(valid){
+                form.submit();
+            }
+
+        });
+
+
 
         function isValidPhoneNumber(phone) {
             if (phone.startsWith('0') && phone.length === 10 && /^\d{10}$/.test(phone)) {
@@ -305,6 +296,8 @@
             }
             return false;
         }
+
+
         function showError(inputId, message) {
             const inputField = document.getElementById(inputId);
             const errorSmall = document.createElement("small");
@@ -333,38 +326,7 @@
             coliStock();
 
         })
-        //Start function to Get des Produits in Stock Modal :::::::::::::::::::::::::::::::
-        document.getElementById('valideProduiStock').addEventListener('click', function() {
-            produitStock = [];
-            const rows = document.querySelectorAll('table tbody tr');
-            rows.forEach(row => {
-            let sku = row.cells[1].textContent.trim();
-            let qtePro = parseInt(row.cells[2].textContent);
-            let input = row.querySelector('input'); 
-
-            if (input) {
-                let qte = input.value.trim();
-                if (qte === "") {
-                    console.log(`Quantity for SKU ${sku} is empty. Skipping.`);
-                } else {
-                    let qteInt = parseInt(qte);
-                    if (isNaN(qteInt) || qteInt <= 0) {
-                        console.log(`Invalid quantity for SKU ${sku}. Must be a number greater than 0. Skipping.`);
-                    } else {
-                        produitStock.push({
-                        sku: sku,
-                        quantite: (qteInt > qtePro) ? qtePro : qteInt
-                        });
-                    }
-                }
-            }
-            });
-
-            p.checked = !p.checked;
-            modal.classList.remove("afficheModel");
-        });
-        //End function to Get des Produits in Stock Modal :::::::::::::::::::::::::::::::
-
+      
         function coliStock(){
             fetch('{{ route("clients.list.produit") }}')
             .then(res => res.json())
@@ -372,18 +334,18 @@
             .catch(err => console.error(err))
         }
         function modal_body(listProduits){
-            // Iwork here Afficher list des produits :::::::::
             const tbody = document.getElementById('modal-body');
             let trs = listProduits.map(p => {
+                
             if (p.varainte && p.varainte.length > 0) {
                 return p.varainte.map(v => {
                                 return `
                                 <tr>
-                                    <td> ${v.nom_varainte} </td> <!-- Display the specific type -->
-                                    <td> ${v.SKU} </td>
-                                    <td> ${v.quantite} </td>
-                                    <td class="col-2"> 
-                                        <input class="col-8" type="number" >
+                                    <td>${v.nom_varainte}</td>
+                                    <td>${v.SKU}</td>
+                                    <td>${v.quantite}</td>
+                                    <td class="col-2">
+                                        <input class="col-8" name="variant[${v.SKU}]" max="${v.quantite}" min="0" type="number" >
                                     </td>
                                 </tr>
                                 `;
@@ -391,11 +353,11 @@
             } else {
                     return `
                     <tr>
-                        <td> ${p.nom_produit} </td> <!-- Display the product name -->
+                        <td> ${p.nom_produit} </td>
                         <td> ${p.SKU} </td>
                         <td> ${p.quantite} </td>
                         <td class="col-2"> 
-                            <input class="col-8" type="number" >
+                            <input class="col-8" name="produit[${p.SKU}]" max="${p.quantite}" min="0" type="number" >
                         </td>
                     </tr>
                     `;
