@@ -364,32 +364,7 @@
       </a>
       <span class="tooltip">Dashboard</span>
     </li>
-    {{-- Start dropdown --}}
-    <!-- <li class="dropdown">
-      <a href="#" class="dropdown-btn">
-        <i class='bx bxs-package'></i>
-        <span class="links_name">Colis</span>
-      </a>
-      <div class="dropdown-content">
-        <a href="{{route('colis.create')}}">Nouveau coli</a>
-        <a href="{{route('colis.listeColis')}}">Liste colis</a>
-        <a href="{{route('colis.colisAttenderRamassage')}}">Colis pour ramasage</a>
-        <a href="{{route('colis.colisNonExpedies')}}">Colis non expedies</a>
-      </div>
-      <span class="tooltip">Colis</span>
-    </li> -->
 
-    <!-- <li class="dropdown">
-      <a href="#" class="dropdown-btn">
-        <i class='bx bxs-buildings'></i>
-        <span class="links_name">Gestion d'inventaire</span>
-      </a>
-      <div class="dropdown-content">
-        <a href="{{ route('clients.produit.create') }}">Ajouter produit</a>
-        <a href="{{ route('clients.produit.index') }}">Inventaire</a>
-      </div>
-      <span class="tooltip">Gestion d'inventaire</span>
-    </li> -->
 
     <li class="dropdown">
       <a href="#" class="dropdown-btn">

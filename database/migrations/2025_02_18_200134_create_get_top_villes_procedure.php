@@ -21,6 +21,7 @@ class CreateGetTopVillesProcedure extends Migration
             FROM villes v
             LEFT JOIN colis c ON v.id = c.id_ville
             WHERE c.id_client = p_id_client
+            AND c.bon_ramassage IS NOT NULL
             GROUP BY v.id
             ORDER BY colis_count DESC
             LIMIT 10;

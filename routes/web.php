@@ -17,7 +17,7 @@ use App\Http\Controllers\DashboardClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
-
+use App\Models\Bon_ramassage;
 
 Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
     Route::prefix('client')->group(function () {
@@ -34,22 +34,25 @@ Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
 
         // Start Route Coli ::::::::::::::::::::::::::::::::
         Route::get('/colis', [ColiController::class, 'listeColis'])->name('colis.listeColis');
-        Route::get('/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
-        Route::get('/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
+        // Route::get('/colis/ramassage', [ColiController::class, 'colisAttenderRamassage'])->name('colis.colisAttenderRamassage');
+        // Route::get('/colis/NonExpedies', [ColiController::class, 'colisNonExpedies'])->name('colis.colisNonExpedies');
         Route::get('/colis/create', [ColiController::class, 'create'])->name('colis.create');
         Route::get('/colis/{id}', [ColiController::class, 'show'])->name('colis.show');
         Route::get('/colis/edit/{id}', [ColiController::class, 'edit'])->name('colis.edit');
         Route::post('/colis', [ColiController::class, 'store'])->name('colis.store');
+        Route::post('/colis/filter', [ColiController::class, 'colisByFilter'])->name('colis.listeColis.filter');
         Route::put('/colis/update/{id}', [ColiController::class, 'update'])->name('colis.update');
         Route::delete('/colis/{id}', [ColiController::class, 'destroy'])->name('colis.destroy');
         // End Route Coli-ticket ::::::::::::::::::::::::::::::::
         Route::get('/coli/{id}/ticket', [ColiController::class, 'ticketColi'])->where('id', '\d+')->name('coli.ticket');
+        Route::get('/bonrammasage/{trackNumber}/tickets', [Bon_ramassageController::class, 'coliByBonramassage'])->where('trackNumber', '[A-Za-z0-9]+')->name('bonramassage.ticket.coli');
         // End Route Coli-ticket ::::::::::::::::::::::::::::::::
         // End Route Coli ::::::::::::::::::::::::::::::::
 
         /// Stock Link ::::::::::::::::::::::::::
         Route::get('/stock/liste', [ProduitController::class, 'index'])->name('clients.produit.index');
         Route::get('/stock/produits', [ProduitController::class, 'getProducts'])->name('clients.list.produit');
+        Route::get('/stock/produits/business/{idBusiness}', [ProduitController::class, 'produitsByBusiness'])->name('clients.list.produitsByBusiness');
         Route::get('/stock/create', [ProduitController::class, 'create'])->name('clients.produit.create');
         Route::post('/stock', [ProduitController::class, 'store'])->name('clients.produit.store');
         Route::delete('/stock/{id}', [ProduitController::class, 'destroy'])->name('clients.produit.destroy');
@@ -138,6 +141,19 @@ Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
     });
 });
 // End Route Admin ::::::::::::::::::::::::::::::::
+
+
+// Start Route Mod ::::::::::::::::::::::::::::::::
+Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
+
+});
+// End Route Mod ::::::::::::::::::::::::::::::::
+
+
+
+
+
+
 Route::get('/villes/{id}', [VilleController::class, 'show'])->name('villes.show');
 
 Route::get('/', [AuthController::class, 'showLoginForm']);

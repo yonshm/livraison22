@@ -30,7 +30,7 @@ return new class extends Migration
             $table->boolean('etat')->default(0)->comment('No paye / paye');
             $table->string('coli_type', 10)->default('normal')->comment('normal / in stock');
             $table->text('commentaire')->nullable();
-            $table->foreignId('id_status')->nullable()->constrained('statuses')->comment('livré / non livré');
+            $table->foreignId('id_status')->constrained('statuses')->comment('livré / non livré');
             $table->timestamps();
         });
     }

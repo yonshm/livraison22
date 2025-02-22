@@ -29,7 +29,8 @@ class CreateGetEtatColisProcedure extends Migration
                 'non payé' AS etat, 
                 COALESCE(SUM(CASE WHEN etat = 0 THEN 1 ELSE 0 END), 0) AS total
             FROM colis
-            WHERE id_client = p_id_client;
+            WHERE id_client = p_id_client
+            AND colis.bon_ramassage IS NOT NULL;
         END
         ";
 

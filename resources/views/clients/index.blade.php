@@ -232,30 +232,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="d-flex ">
-                                                            <div class="col-8">
-                                                                <div class="card right-side mx-lg-3 mt-3">
-                                                                    <h4 class="p-3 m-0">Top 10 Villes</h4>
-                                                                </div>
-                                                                <div class="card right-side mx-lg-3 mt-3">
-                                                                    <div class="card-body p-3">
-                                                                        <div id="chart-bar-basic" style="min-height: 365px;"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-4">
-
-                                                                <div class="card right-side mx-lg-3 mt-3">
-                                                                    <h4 class="p-3 m-0">Top 10 Villes</h4>
-                                                                </div>
-                                                                <div class="card right-side mx-lg-3 mt-3">
-                                                                    <div class="card-body p-3 my-6">
-                                                                        <div id="chart-pie-simple" class="py-7"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
-
             <div class="d-flex flex-wrap">
                 <div class="col-lg-7 col-12">
                     <div class="card right-side mx-lg-3 mt-3">
@@ -363,48 +339,48 @@
                             let value = series[seriesIndex][dataPointIndex];
 
                             return `
-                                                                                                                        <div style="
-                                                                                                                            background: linear-gradient(135deg, #1e1e1e, #2b2b2b);
-                                                                                                                            color: #ffffff;
-                                                                                                                            padding: 12px 16px;
-                                                                                                                            border-radius: 10px;
-                                                                                                                            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-                                                                                                                            font-size: 14px;
-                                                                                                                            font-family: 'Arial', sans-serif;
-                                                                                                                            text-align: left;
-                                                                                                                            min-width: 160px;
-                                                                                                                            transition: all 0.3s ease-in-out;
-                                                                                                                            position: relative;
-                                                                                                                            border: 1px solid rgba(255, 255, 255, 0.2);
-                                                                                                                        ">
-                                                                                                                            <div style="
-                                                                                                                                content: '';
-                                                                                                                                position: absolute;
-                                                                                                                                bottom: -8px;
-                                                                                                                                left: 50%;
-                                                                                                                                transform: translateX(-50%);
-                                                                                                                                width: 0;
-                                                                                                                                height: 0;
-                                                                                                                                border-left: 8px solid transparent;
-                                                                                                                                border-right: 8px solid transparent;
-                                                                                                                                border-top: 8px solid rgba(255, 255, 255, 0.2);
-                                                                                                                            "></div>
+                                    <div style="
+                                        background: linear-gradient(135deg, #1e1e1e, #2b2b2b);
+                                        color: #ffffff;
+                                        padding: 12px 16px;
+                                        border-radius: 10px;
+                                        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+                                        font-size: 14px;
+                                        font-family: 'Arial', sans-serif;
+                                        text-align: left;
+                                        min-width: 160px;
+                                        transition: all 0.3s ease-in-out;
+                                        position: relative;
+                                        border: 1px solid rgba(255, 255, 255, 0.2);
+                                    ">
+                                        <div style="
+                                            content: '';
+                                            position: absolute;
+                                            bottom: -8px;
+                                            left: 50%;
+                                            transform: translateX(-50%);
+                                            width: 0;
+                                            height: 0;
+                                            border-left: 8px solid transparent;
+                                            border-right: 8px solid transparent;
+                                            border-top: 8px solid rgba(255, 255, 255, 0.2);
+                                        "></div>
 
-                                                                                                                            <div style="
-                                                                                                                                border-bottom: 1px solid rgba(255,255,255,0.2);
-                                                                                                                                padding-bottom: 6px;
-                                                                                                                                margin-bottom: 6px;
-                                                                                                                                font-weight: bold;
-                                                                                                                                color: #f1c40f;
-                                                                                                                            ">
-                                                                                                                                📍 Ville : ${city}
-                                                                                                                            </div>
+                                        <div style="
+                                            border-bottom: 1px solid rgba(255,255,255,0.2);
+                                            padding-bottom: 6px;
+                                            margin-bottom: 6px;
+                                            font-weight: bold;
+                                            color: #f1c40f;
+                                        ">
+                                            📍 Ville : ${city}
+                                        </div>
 
-                                                                                                                            <div style="color: #1abc9c; font-weight: bold;">
-                                                                                                                                🚚 Nombre de livraisons : ${value}
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    `;
+                                        <div style="color: #1abc9c; font-weight: bold;">
+                                            🚚 Nombre de livraisons : ${value}
+                                        </div>
+                                    </div>
+                                `;
                         },
                     },
 
@@ -511,4 +487,6 @@
 
             }
         </script>
+
+
 @endsection

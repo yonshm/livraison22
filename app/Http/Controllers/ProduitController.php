@@ -31,6 +31,36 @@ class ProduitController extends Controller
         return view('produits.index', compact('produits', 'business'));
     }
 
+    public function produitsByBusiness(string $idBusiness)
+    {
+        try{
+
+            $id_client = session('user')->id;
+            
+            
+            $produits = Produit::where(['status' => 1, 'id_client' => $id_client, 'id_business' => $idBusiness])
+            ->where(function($query) {
+                $query->where('quantite', '>', 0)
+                    ->orWhereNull('quantite');
+            })
+            ->whereNotNull('id_responsable')
+            ->with(['varainte' => function($v) {
+                $v->where('quantite', '>', 0);
+            }])
+            ->get();
+            
+            if ($produits->isEmpty()) {
+                return response()->json(['message' => 'No produits'], 404);
+            }
+            
+            return response()->json($produits);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'Une erreur est survenue lors de la récupération des produits'], 500);
+        }
+
+    }
     public function getProducts()
     {
         try{
@@ -118,11 +148,12 @@ class ProduitController extends Controller
                     ]);
                 }
             }
-            return response()->json([
-                'success' => true,
-                'message' => 'Produit et variantes créés avec succès.',
-                'data' => $produit,
-            ], 201);
+            return redirect()->route('produit.create');
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Produit et variantes créés avec succès.',
+            //     'data' => $produit,
+            // ], 201);
         }catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
@@ -142,7 +173,6 @@ class ProduitController extends Controller
                 'message' => 'Une erreur s\'est produite. Veuillez réessayer plus tard.'
             ], 500);
         }
-        dd($request->all());
     }
 
     /**

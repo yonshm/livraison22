@@ -1,12 +1,7 @@
 form #produits-modal {
     display: none;
-    position: absolute;
-    left: 50%;
-    top: 80px;
-    transform: translateX(-50%);
-    background-color: #FFF;
-    border-radius: 20px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width: 100%;
+
 }
 form .afficheModel {
     display: block !important;

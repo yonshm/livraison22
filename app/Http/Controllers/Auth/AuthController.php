@@ -60,9 +60,13 @@ class AuthController extends Controller
             $role = Role::find($id);
 
             if ($role->nom_role === 'admin') {
-                return redirect()->intended('admin/');
+                // dd(Auth::user());
+                return redirect()->route('dashboard.admin');
             }
             else if ($role->nom_role === 'client') {
+                return redirect()->route('clients.index');
+            }
+            else {
                 return redirect()->route('clients.index');
             }
         }

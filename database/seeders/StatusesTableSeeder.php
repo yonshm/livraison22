@@ -15,7 +15,7 @@ class StatusesTableSeeder extends Seeder
     {
         $statuses = [
             [
-                'nom_status' => 'en attente',
+                'nom_status' => 'attender ramassage',
                 'color' => 'warning',
             ],
             [
@@ -29,6 +29,10 @@ class StatusesTableSeeder extends Seeder
             [
                 'nom_status' => 'refuse',
                 'color' => 'danger',
+            ],
+            [
+                'nom_status' => '',
+                'color' => '',
             ],
         ];
 

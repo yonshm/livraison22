@@ -375,8 +375,8 @@
       <div class="dropdown-content">
         <a href="{{route('colis.create')}}">Nouveau coli</a>
         <a href="{{route('colis.listeColis')}}">Liste colis</a>
-        <a href="{{route('colis.colisAttenderRamassage')}}">Colis pour ramasage</a>
-        <a href="{{route('colis.colisNonExpedies')}}">Colis non expedies</a>
+        {{-- <a href="{{route('colis.colisAttenderRamassage')}}">Colis pour ramasage</a>
+        <a href="{{route('colis.colisNonExpedies')}}">Colis non expedies</a> --}}
       </div>
       <span class="tooltip">Colis</span>
     </li>

@@ -14,6 +14,7 @@ use App\Models\Ville;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ColiController extends Controller
 {
@@ -28,8 +29,11 @@ class ColiController extends Controller
     public function listeColis()
     {
         $id_client = session('user')->id;
-        $colis = Coli::with('status')->where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->orderByDesc('id')->get();
-        return view('colis.index', compact('colis'));
+        $colis = Coli::with('business','status')->where('id_client', $id_client)->whereNotNull('bon_ramassage')->with('ville')->with('business')->orderByDesc('id')->get();
+        $status = Status::all();
+        $business = Business::where('id_utilisateur', $id_client)->get();
+        $villes = Ville::all();
+        return view('colis.index', compact('colis', 'status','business', 'villes'));
     }
     public function colisAttenderRamassage()
     {
@@ -81,6 +85,7 @@ class ColiController extends Controller
     public function store(Request $request)
     {
         $id_client = session('user')->id;
+    
         try{
             $request->validate([
                 'destinataire' => 'required|string|max:255',
@@ -105,18 +110,20 @@ class ColiController extends Controller
             $toCity = Ville::find($dataColi['id_ville'])->nom_ville[0] ?? 'X';
             $track_number = $this->trackNumber($id_client, $fromCity, $toCity);
 
+            $attRama = Status::where('nom_status', 'attender ramassage')->firstOrFail();
+
             $request->has('ouvrir') ? $dataColi['ouvrir'] = 1 : $dataColi['ouvrir'] = 0;
             $dataColi['track_number'] = $track_number;
             $dataColi['date_creation'] = now()->toDateString();
             $dataColi['id_client'] = $id_client;
+            $dataColi['id_status'] = $attRama->id;
             $dataColi['bon_ramassage'] = null;
-
+            
             $coli = Coli::create($dataColi);
-
             if ($request->has('produit') && !empty($request->produit) && $request->produit != null) {
                 $produit = $request->input('produit');
-                $coli->coli_type = "stock";
-                $coli->save();
+                $totalQteP = 0;
+                
                 foreach ($produit as $key => $quantite) {
                     if (isset($key) && isset($quantite)) {
                         $pro = Produit::where('SKU', $key)->first();
@@ -126,20 +133,22 @@ class ColiController extends Controller
                                 'SKU' => $key,
                                 'quantite' => (int) $quantite <= $pro->quantite ? (int)$quantite : $pro->quantite,
                             ]);
+                            $totalQteP += (int) $quantite <= $pro->quantite ? (int)$quantite : $pro->quantite;                           
                             if ((int)$quantite <= $pro->quantite) {
                                 $pro->quantite -= (int) $quantite;
                             }else{
                                 $pro->quantite = 0;
                             }
-                                $pro->save();
+                            $pro->save();
                         }
                     }
                 }
+                $coli->coli_type = "stock";
+                $coli->save();
             }
             if ($request->has('variant') && !empty($request->variant) && $request->variant != null) {
                 $variant = $request->input('variant');
-                $coli->coli_type = "stock";
-                $coli->save();
+                $totalQteV = 0;
                 foreach ($variant as $key => $quantite) {
                     if (isset($key) && isset($quantite)) {
                         $var = Varainte::where('SKU', $key)->first();
@@ -149,16 +158,18 @@ class ColiController extends Controller
                                 'SKU' => $key,
                                 'quantite' => (int) $quantite <= $var->quantite ? (int)$quantite : $var->quantite,
                             ]);
-                            
+                            $totalQteV += (int) $quantite <= $var->quantite ? (int)$quantite : $var->quantite;                           
                             if ((int)$quantite <= $var->quantite) {
                                 $var->quantite -= (int) $quantite ;
                             }else{
                                 $var->quantite = 0;
                             }
-                                $var->save();
+                            $var->save();
                         }
                     }
                 }
+                $coli->coli_type = "stock";
+                $coli->save();
             }
             return redirect()->route('colis.create');
         } catch (\Exception $e) {
@@ -243,9 +254,47 @@ class ColiController extends Controller
         $coli = Coli::where('id', $id)
             ->where('id_client', $id_client)
             ->firstOrFail();
-
+        
         $coli->delete();
         return response()->json(['message' => 'Colis deleted successfully'], 200);
     }
 
+    public function colisByFilter(Request $request)
+    {
+        $id_client = session('user')->id;
+        $search = $request->input('track_number');
+        $etat = $request->input('etat');
+        $status = $request->input('id_status');
+        $ville = $request->input('id_ville');
+        $business = $request->input('id_business');
+        $date = $request->input('date');
+
+        $query = Coli::query();
+
+        if ($search && !empty($search) && $search != '-1') {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->where('track_number', 'LIKE', "%$search%");
+        }
+
+        if ($etat && !empty($etat) && $etat != '-1') {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->where('etat', $etat);
+        }
+
+        if ($status && !empty($status) && $status != '-1') {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->where('id_status', $status);
+        }
+
+        if ($ville && !empty($ville) && $ville != '-1') {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->where('id_ville', $ville);
+        }
+
+        if ($business && !empty($business) && $business != '-1') {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->where('id_business', $business);
+        }
+
+        if ($date && !empty($date)) {
+            $query->whereNotNull('bon_ramassage')->where('id_client',$id_client)->whereDate('date_creation', $date);
+        }
+        $colis = $query->with(['business', 'ville','status'])->whereNotNull('bon_ramassage')->where('id_client',$id_client)->orderByDesc('id')->get();
+        return response()->json(['colis' => $colis]);
+    }
 }

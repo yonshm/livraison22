@@ -93,8 +93,10 @@
             .ticket { position: relative; left: 0; top: 0; }
         }
 </style>
-
-<div id="ticket" class="ticket">
+<div id="tickets-container" class="row mx-5 mt-7 gap-3">
+    @if (isset($listColis[0]) && $listColis[0]->coli->isNotEmpty())
+        @foreach ($listColis[0]->coli as $coli)
+            <div class="ticket" onclick="window.print()">
                 <div class="headerTicket">
                     <img src="https:/fakeimg.pl/250x250/" alt="logo">
                     <div class="codeNumber">
@@ -151,37 +153,19 @@
                         </tr>
                     </tfoot>
                 </table>
-    <div class="footer">
-        <p class="nom-societe">{{$general->nom}}</p>
-        <p>{{ substr($general->telephone_a, 0, 4) . '.' . substr($general->telephone_a, 4, 3) . '.' . substr($general->telephone_a, 7, 3) . '.' . substr($general->telephone_a, 10) }}
-        </p>
-
-    </div>
+                <div class="footer">
+                    <p class="nom-societe">{{$general->nom}}</p>
+                    <p>
+                        {{ substr($general->telephone_a, 0, 4) . '.' . substr($general->telephone_a, 4, 3) . '.' . substr($general->telephone_a, 7, 3) . '.' . substr($general->telephone_a, 10) }}
+                    </p>
+                </div>
+            </div>
+        @endforeach
+    @else
+        <p>No colis found.</p>
+    @endif
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-<script>
-    document.getElementById('ticket').addEventListener('click', ()=>{
-        window.print()
-    })
-    function barCode(numberTarking) {
-        const value = numberTarking.toUpperCase();
-        JsBarcode("#barcodeImage", value, {
-            format: "CODE128",
-            lineColor: "#000",
-            width: 2,
-            height: 100,
-            displayValue: true,
-        });
-        const qrcode = new QRCode(document.getElementById("qrImage"), {
-            text: value,
-            width: 100,
-            height: 100,
-        });
-    }
-    barCode('{{$coli->track_number}}');
-</script>
 
 @endsection

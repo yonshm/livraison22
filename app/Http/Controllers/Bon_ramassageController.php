@@ -6,6 +6,7 @@ use App\Models\Bon_ramassage;
 use App\Models\Coli;
 use App\Models\Ville;
 use Illuminate\Http\Request;
+use Nette\Utils\Strings;
 
 class Bon_ramassageController extends Controller
 {
@@ -93,6 +94,10 @@ class Bon_ramassageController extends Controller
         ]);
     }
 
+    public function coliByBonramassage($trackNumber){
+        $listColis = Bon_ramassage::with('coli')->where('ref_ramassage', $trackNumber)->get();
+        return view('colis.ticketListeColi', compact('listColis'));
+    }
     /**
      * Display the specified resource.
      */

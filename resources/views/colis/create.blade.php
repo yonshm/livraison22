@@ -164,19 +164,29 @@
                         </div>
                     </div>
                         <div id="produits-modal" class="card-body col-lg-8 py-4 px-7">
-                            <div class="modal-header align-items-center mb-3">
-                                <h4 class="modal-title">
-                                    Lites des produit stock
-                                </h4>
-                                <button id="close-produits-modal" type="button" class="btn-close"></button>
-                            </div>
                             <div class="mx-auto w-100" id="modal-body">
-                                <table id="productTable">
-                                    
-                                </table>
+                                <div class="table-responsive mb-4 border rounded-1">
+                                    <table class="table text-nowrap mb-0 align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Produit</th>
+                                                <th>SKU</th>
+                                                <th>Quantite</th>
+                                                <th>Tout</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyProStock">
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div>
-                                <button id="valideProduiStock" type="button" class="btn btn-primary hstack" >ajouter</button>
                             </div>
                         </div>
                     
@@ -269,20 +279,6 @@
             }
         });
 
-        document.getElementById('valideProduiStock').addEventListener('click', function() {
-            let valid = true;
-            const rows = document.querySelectorAll('table tbody tr');
-            rows.forEach(row => {
-                if(row.children[2].textContent.trim()){
-                // I work here :::::::::
-                    console.log()
-                }
-            })
-            if(valid){
-                form.submit();
-            }
-
-        });
 
 
 
@@ -316,25 +312,32 @@
         
         const p = document.getElementById('colisDuStock');
         const modal = document.getElementById('produits-modal');
-        document.getElementById('close-produits-modal').addEventListener('click', ()=>{
-            modal.classList.toggle("afficheModel");
-            p.checked = !p.checked;
-            coliStock();
-        })
         p.addEventListener('change', ()=>{
             modal.classList.toggle("afficheModel");
-            coliStock();
+            if (!modal.classList.contains("afficheModel")) {
+                document.getElementById('tbodyProStock').innerHTML = "<tr><td></td><td></td><td></td><td></td></tr>";
+            }else{
+                coliStock();
+            }
 
         })
       
+        document.getElementById('slc-business').addEventListener('change', ()=>{
+            coliStock()
+        })
         function coliStock(){
-            fetch('{{ route("clients.list.produit") }}')
-            .then(res => res.json())
-            .then(data => modal_body(data) )
-            .catch(err => console.error(err))
+            const idBusiness = document.getElementById('slc-business').value.trim();
+            if(idBusiness && idBusiness != '-1'){
+                fetch('/client/stock/produits/business/'+ idBusiness)
+                .then(res => res.json())
+                .then(data => modal_body(data) )
+                .catch(err => console.error(err))
+            }else{
+                document.getElementById('tbodyProStock').innerHTML = "<tr><td></td><td></td><td></td><td></td></tr>";
+            }
         }
         function modal_body(listProduits){
-            const tbody = document.getElementById('modal-body');
+            const tbodyProStock = document.getElementById('tbodyProStock');
             let trs = listProduits.map(p => {
                 
             if (p.varainte && p.varainte.length > 0) {
@@ -363,23 +366,7 @@
                     `;
                 }
             }).join('');
-                tbody.innerHTML = `
-                            <div class="table-responsive mb-4 border rounded-1">
-                                <table class="table text-nowrap mb-0 align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>Produit</th>
-                                            <th>SKU</th>
-                                            <th>Quantite</th>
-                                            <th>Tout</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                ${ trs }
-                                            </tbody>
-                                </table>
-                            </div>
-                `;
+                tbodyProStock.innerHTML = trs ;
             }
 
 
