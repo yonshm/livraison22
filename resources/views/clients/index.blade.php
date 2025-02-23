@@ -67,7 +67,7 @@
                                                             <h6 class="fw-normal fs-3 mb-1">Colis en cours</h6>
                                                             <h4
                                                                 class="mb-3 d-flex align-items-center justify-content-center gap-1">
-                                                                2</h4>
+                                                                {{ $coli_info->totalColisEnCours }}</h4>
                                                             <span class="btn btn-white fs-2 fw-semibold text-nowrap">View
                                                                 Details</span>
                                                         </div>
