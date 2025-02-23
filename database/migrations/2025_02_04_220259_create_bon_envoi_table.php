@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bon_envoi', function (Blueprint $table) {
+        Schema::create('bon_envois', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_livraison')->constrained('utilisateurs');
             $table->foreignId('zone')->constrained('zones');
             $table->boolean('arrivee')->default(0)->comment('en route / acces');
             $table->dateTime('date_debut');
+            $table->dateTime('ref');
             $table->dateTime('date_arrivee')->nullable();
             $table->timestamps();
         });

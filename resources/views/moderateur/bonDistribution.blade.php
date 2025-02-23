@@ -1,10 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('content')
-    <div class="home ">
-      @include('layouts.sideBar')
+    <div class="home">
+      @include('layouts.sideBarModerateur')
+    
     <div class="main">
-      @include('layouts.navBar')
-
+      @include('layouts.nav')
       <div class="mx-3">              
         <div class="acc-filter">
           <div class="colis-filter">

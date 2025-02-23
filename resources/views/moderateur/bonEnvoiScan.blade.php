@@ -1,5 +1,6 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('content')
+    
 
 <style>
     .alert {
@@ -26,10 +27,11 @@
     
 </style>
 <div class="home">
-    @include('layouts.sideBar')
-  <div class="main">
-    @include('layouts.navBar')
-    <div class="mx-3">
+  @include('layouts.sideBarModerateur')
+
+<div class="main">
+  @include('layouts.nav')
+
 
     <div class="card mt-3">
         <div class="card-body">
@@ -67,9 +69,9 @@
                 @endif
                 
                 @if(session('error'))
-      <div class="alert alert-danger">
-        {{ session('error') }}
-      </div>
+            <div class="alert alert-danger">
+              {{ session('error') }}
+            </div>
     @endif
 
     @if(session('info'))
@@ -77,13 +79,6 @@
         {{ session('info') }}
     </div>
     @endif
-
-    {{-- @if(session('colis'))
-    <div class="alert alert-info">
-        {{ session('colis') }}
-    </div>
-    @endif --}}
-    
 </div>
 </div>
 
@@ -173,56 +168,89 @@
 <div class="card mt-3">
   <div class="card-body">
     <h4 class="card-title">Scan Du Colis</h4>
-    <form id="status-form" action="" method="POST">
-      @csrf
       <div class="row">
         <div class="col-md-12">
           <div class="floating mb-3">
           <input 
         type="text" 
-        name="ref" 
-        placeholder="Scannez ou tapez le référence" 
+        name="ref"
+        placeholder="Scannez ou tapez le référence du coli" 
         class="form-control" 
         required 
-        onkeydown="handleScanner(event)"/>
+        onkeydown="handleScannerColi(event)"
+        id="scanColi"/>
       </div>
         </div>
       </div>
-    </form>
   </div>
 </div>
     @error('ref')
     <span style="color: rgb(255, 0, 0);">{{ $message }}</span>
 @enderror
-  
-<div class="colis-tables">
-  <div class="card mb-3 mt-3">
-    <div class="card-body">
-      <h4 class="card-title">Colis Scanée</h4>  
+<div class="d-flex justify-content-between">
+  <!-- First Table -->
+  <div class="col-md-6">
+    <div class="card mb-3 mt-3 mx-2">
+      <div class="card-body">
+        <h4 class="card-title">Colis</h4>  
         <div class="table-responsive">  
-        <table class="table mb-0 ">
-        <thead class="table-success">
-            <tr>
+          <table class="table mb-0">
+            <thead class="table-success">
+              <tr>
                 <th scope="col">Ref</th>
                 <th scope="col">Statut</th>
                 <th scope="col">Ville</th>
-            </tr>
-        </thead>
-        <tbody>
-          @foreach (session('colis') as $item)
-              
-          <tr>
-            <td>{{$item->ref}}</td>
-            <td>{{$item->status->nom_status ?? ''}}</td>
-            <td>{{$item->ville->nom_ville}}</td>
-          </tr>
-          
-            @endforeach
-        </tbody>
-        </table>
-        </div> 
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (session('colis') as $item)
+                @if (($item->status->nom_status ?? '') == 'expidé') 
+                <tr id={{ $item->ref }}>
+                      <td>{{ $item->ref }}</td>
+                      <td>{{ $item->status->nom_status ?? '' }}</td>
+                      <td>{{ $item->ville->nom_ville }}</td>
+                  </tr>
+                @endif
+              @endforeach
+            </tbody>
+          </table>
         </div> 
       </div> 
+    </div> 
+  </div>
+
+  <!-- Second Table -->
+  <div class="col-md-6">
+    <div class="card mb-3 mt-3 mx-2">
+      <div class="card-body">
+        <h4 class="card-title">Colis Scanée</h4>  
+        <div class="table-responsive">  
+          <table class="table mb-0">
+            <thead class="table-success">
+              <tr>
+                <th scope="col">Ref</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Ville</th>
+              </tr>
+            </thead>
+            <tbody id="colisScanned">
+              @foreach (session('colis') as $item)
+                @if (($item->status->nom_status ?? '') == 'reçue') 
+                  <tr id={{ $item->ref }}>
+                      <td>{{ $item->ref }}</td>
+                      <td>{{ $item->status->nom_status ?? '' }}</td>
+                      <td>{{ $item->ville->nom_ville }}</td>
+                  </tr>
+                @endif
+              @endforeach
+            </tbody>
+          </table>
+        </div> 
+      </div> 
+    </div> 
+  </div>
+</div>
+
     
 {{-- @if(session()->has('colis') && session('colis')->isNotEmpty())
 <div class="card mt-3">
@@ -338,4 +366,44 @@
 </div>
 </div>
 </div>
+<script>
+  function handleScannerColi(event) {
+    if (event.key === 'Enter') { 
+        let scannedValue = event.target.value.trim();
+        let row = document.getElementById(scannedValue); 
+        console.log(scannedValue);
+        if(row) {
+          let statusCell = row.cells[1];
+
+          fetch('{{route('bonEnv.updateColiStatus')}}',{
+          method : 'POST',
+          headers : {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({ ref: scannedValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusCell.textContent = "reçue"; 
+                document.getElementById('colisScanned').appendChild(row);
+            
+          console.log(row)
+        }else{
+           alert("Erreur : " + data.message);
+          }
+        })
+        .catch(error => console.error("Error:", error));
+      }else{
+        alert("Colis non trouvé !");
+      }
+        event.target.value = "";
+    }
+}
+
+
+  
+
+</script>
 @endsection

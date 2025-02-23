@@ -297,4 +297,18 @@ class ColiController extends Controller
         $colis = $query->with(['business', 'ville','status'])->whereNotNull('bon_ramassage')->where('id_client',$id_client)->orderByDesc('id')->get();
         return response()->json(['colis' => $colis]);
     }
+
+    public function colisZone()
+    {
+        $colis = Coli::whereHas('ville.zone', function ($query) {
+            $query->where('id', 5);
+        })
+        ->whereHas('bon_ramassage.bon_envoi', function($query){
+            $query->where('arrivee', 1);
+        } )
+        ->whereNotIn('id_status', [5, 6])
+        ->with(['ville.zone', 'business', 'client', 'status'])
+        ->get();
+        return view('moderateur.colis', compact('colis'));
+    }
 }

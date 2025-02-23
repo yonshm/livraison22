@@ -1,10 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('content')
+    <div class="home">
+      @include('layouts.sideBarModerateur')
     
-    <div class="home ">
-      @include('layouts.sideBar')
     <div class="main">
-      @include('layouts.navBar')
+      @include('layouts.nav')
       <div class="mx-3">
         <div class="table-responsive mb-4 border rounded-1 mt-3">
           <table class="table text-nowrap mb-0 align-middle">
@@ -83,48 +83,6 @@
 
           
       </div>
-  <div class="modal fade" id="exampleModal" data-bs-backdrop="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Details du bon</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <div class="modal-body">
-        <table class="table">
-          <thead>
-            <th>Ref</th>
-            <th>Ref</th>
-            <th>Ref</th>
-          </thead>
-          
-          <tr>
-            
-            <td>AA</td>
-            <td>AA</td>
-            <td>AA</td>
-          </tr>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-              
-
-      <script>
-        function handleScanner(event) {
-          if (event.key === "Enter") {
-            event.preventDefault(); 
-            document.getElementById('status-form').submit();
-          }
-        }
-      </script>
-
-  </div>
+  
 </div>
 @endsection

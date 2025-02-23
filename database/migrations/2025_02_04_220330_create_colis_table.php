@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('colis', function (Blueprint $table) {
             $table->id();
             $table->string('track_number', 255);
-            $table->foreignId('bon_distribution')->nullable()->constrained('bon_distribution');
+            $table->foreignId('bon_distribution')->nullable()->constrained('bon_distributions');
             $table->string('telephone', 15);
             $table->string('adresse', 255);
             $table->string('marchandise', 255)->default('');

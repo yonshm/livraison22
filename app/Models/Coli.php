@@ -25,4 +25,10 @@ class Coli extends Model
     public function bon_ramassage(){
         return $this->belongsTo(Bon_ramassage::class, 'bon_ramassage');
     }
+    public function coliStock(){
+        return $this->hasMany(Coli_stock::class, 'id_coli');
+    }
+    public function client(){
+        return $this->belongsTo(Client::class, 'id_client');
+    }
 }

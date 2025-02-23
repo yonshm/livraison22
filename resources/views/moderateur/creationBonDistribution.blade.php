@@ -1,9 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('content')
-    <div class="home ">
-      @include('layouts.sideBar')
+    <div class="home">
+      @include('layouts.sideBarModerateur')
+    
     <div class="main">
-      @include('layouts.navBar')
+      @include('layouts.nav')
 
       <div class="mx-3"> 
         
@@ -49,74 +50,8 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                @if ($colis->isEmpty())
-                <tr>
-                <td class="text-center" colspan="10">
-                  Aucune colis reçue
-                </td>
-            </tr>
-
-              @else
-                @foreach ($colis as $coli)
-                <tr id="{{$coli->ref}}">
-                  <td>
-                      <div class="ms-3">
-                        <h6 class="fs-4 fw-semibold mb-0">{{$coli->ref}}</h6>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->date_creation}}</p>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->telephone}}</p>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->client->nom_magasin ?? $coli->client->nom}}</p>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->etat == 1 ? 'paye' : 'Non paye'}}</p>
-                  </td>
-                  <td>
-                    <span class="badge bg-success-subtle text-success">{{$coli->status->nom_status ?? ''}}</span>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->ville->nom_ville}}</p>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal">{{$coli->prix}}</p>
-                  </td>
-                  
-                  <td>
-                    <div class="dropdown dropstart">
-                      <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="ti ti-dots-vertical fs-6"></i>
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                            <i class="fs-4 ti ti-plus"></i>Add
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                            <i class="fs-4 ti ti-edit"></i>Edit
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                            <i class="fs-4 ti ti-trash"></i>Delete
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>
-                    <input type="checkbox" class="form-check-input primary coli-checked" id="">
-                    </td>
-                </tr>
-                @endforeach
-                @endif
+              <tbody id="colisTable">
+                
               </tbody>
             </table>
 
@@ -142,7 +77,7 @@
 
         <div>
           <div class="table-responsive mb-2 border rounded-1" >
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table text-nowrap mb-0 align-middle" style="display: none">
               <thead class="text-dark fs-4">
                 <tr>
                   <th>
@@ -162,45 +97,15 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="ms-3">
-                        <h6 class="fs-4 fw-semibold mb-0">Sunil Joshi</h6>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="ms-3">
-                        <h6 class="fs-4 fw-semibold mb-0">Sunil Joshi</h6>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="mb-0 fw-normal fs-4">Elite Admin</p>
-                  </td>
-                  <td>
-                    <span class="badge bg-success-subtle text-success">Active</span>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <a href="javascript:void(0)" class="text-bg-secondary text-white fs-6 round-40 rounded-circle me-n2 card-hover border border-2 border-white d-flex align-items-center justify-content-center">
-                        S
-                      </a>
-                      <a href="javascript:void(0)" class="text-bg-danger text-white fs-6 round-40 rounded-circle me-n2 card-hover border border-2 border-white d-flex align-items-center justify-content-center">
-                        D
-                      </a>
-                    </div>
-                  </td>
-                </tr>
+              <tbody id="colisLivreurTable">
+                
               </tbody>
             </table>
           </div>
-          <div class="d-flex flex-column align-items-end">
+          <div class="d-flex flex-column align-items-end" style="display: none">
             <span id="valider-btn" class="ms-auto btn btn-success mb-2 ">Valider</span>
           </div>
+          
         </div>
       </div>
 
@@ -304,12 +209,9 @@
       bonDistributions.push(bon);
       localStorage.setItem('bon_distribution', JSON.stringify(bonDistributions));
 
-      let unvalidatedColis = JSON.parse(localStorage.getItem('unvalidatedColis')) || [];
-      unvalidatedColis.push(colis);
-      localStorage.setItem('unvalidatedColis', JSON.stringify(unvalidatedColis));
 
-      const checkedColis = getSelectedColis();
-      fillListeLivreur();
+      const checkedColis = getSelectedColis();  
+        fillListeLivreur();
         checkedColis.forEach(coliId => {
            const row = document.getElementById(coliId);
            if (row) {
@@ -318,88 +220,244 @@
 
           });
           const colisList = @json($colis);
-          console.log('colis: ',colisList)
-          const storedColisRefs = JSON.parse(localStorage.getItem('unvalidatedColis')) || [];
-          console.log(storedColisRefs) // Array of refs stored in localStorage
+          const storedColisRefs = unvalidatedColis()
           const filteredColis = colisList.filter(colis => !storedColisRefs == colis.ref);
           console.log(filteredColis)
+
       }
+      fillColisTable();
       });
+
 
     function fillListeLivreur() {
       const liste = document.getElementById('listLivreurs');
       const livreurOl = document.getElementById('listeLivreurOl');
       const bonDistributions = JSON.parse(localStorage.getItem('bon_distribution')) || [];
-    
-    livreurOl.innerHTML = '';
-    const livreurs = @json($livreur);
-    bonDistributions.forEach(bon => {
-      const matchedLivreur = livreurs.find(livreur => livreur.id == bon.livreur_id);
-      const livreurName = matchedLivreur ? matchedLivreur.nom : "Inconnu";
-      livreurOl.innerHTML += (`
-            <li class="list-group-item d-flex justify-content-between align-items-start m-0" id="${bon.colis_ids[0]}">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold">${livreurName}</div>
-                </div>
-                <span class="badge bg-primary">${bon.colis_ids.length}</span>
-            </li>
-        `);
+      
+      livreurOl.innerHTML = '';
+      const livreurs = @json($livreur);
+      bonDistributions.forEach(bon => {
+        const matchedLivreur = livreurs.find(livreur => livreur.id == bon.livreur_id);
+        const livreurName = matchedLivreur ? matchedLivreur.nom : "Inconnu";
+        livreurOl.innerHTML += (`
+              <li class="list-group-item d-flex justify-content-between align-items-start m-0" id="${bon.colis_ids[0]}">
+                  <div class="ms-2 me-auto">
+                      <div class="fw-bold">${livreurName}</div>
+                  </div>
+                  <span class="badge bg-primary">${bon.colis_ids.length}</span>
+              </li>
+          `);
+      });
+      
+      const listItems = livreurOl.querySelectorAll('li');
+      let tableLivColis = [];
+      listItems.forEach(item => {
+        item.addEventListener('click', function() {
+            
+            tableLivColis = [];
+            const colisLivreurTable = document.getElementById('colisLivreurTable');
+            colisLivreurTable.innerHTML = '';
+            const itemId = item.id; 
+            const colis = @json($colis);
+            let matchedColis = [];
+            bonDistributions.forEach(bon => {
+            if (bon.colis_ids.includes(itemId)) {
+              matchedColis = bon.colis_ids;
+            }
+          });
+            matchedColis.forEach(matchedColiId=>{
+              const matchedColi = colis.find(coli =>coli.track_number === matchedColiId);
+              
+              if (matchedColi) {
+                tableLivColis.push(matchedColi);
+              }
+            })
+
+            
+            console.log('matched colis : ',tableLivColis);
+            
+            if(tableLivColis.length > 0){
+              colisLivreurTable.parentElement.style.display = "block";
+              tableLivColis.forEach(coli => {
+              colisLivreurTable.innerHTML += `
+              <tr id="${coli.track_number}">
+                  <td>
+                      <div class="ms-3">
+                        <h6 class="fs-4 fw-semibold mb-0">${coli.track_number}</h6>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.client.nom_magasin ?? coli.client.nom}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.ville.nom_ville}</p>
+                  </td>
+                  <td>
+                    <span class="badge bg-success-subtle text-success">${coli.status.nom_status ?? ''}</span>
+                  </td>
+                  <td>
+                    <i class='bx bxs-trash fs-7 delete-colis'></i>
+                    </td>
+                </tr>
+              `;
+          });
+          attachDeletEvent();
+        }
+      });
     });
-
-    // Show list if there are items, otherwise hide
-    if (liste) {
-        liste.style.display = bonDistributions.length > 0 ? "block" : "none";
-    }
+      let valid = document.getElementById('valider-btn')
+      if (liste) {
+          liste.style.display = bonDistributions.length > 0 ? "block" : "none";
+          valid.style.display = bonDistributions.length > 0 ? "block" : "none";
+      }
 }
-  window.onload = function() {
-      console.log("Window is loaded!");
-      // Call your function here
-      fillListeLivreur();
 
+
+  function fillColisTable(){
+          const colisList = @json($colis);
+          const storedColisRefs = unvalidatedColis()
+          const filteredColis = colisList.filter(colis => !storedColisRefs.includes(colis.ref) && colis.id_status == 1);
+          
+          let colisTable = document.getElementById('colisTable');
+          colisTable.innerHTML = "";
+          if(filteredColis.length == 0){
+            colisTable.innerHTML = `
+            <tr>
+              <td colspan='10' class="text-center">
+                <p>Aucune colis reçue</p>
+              </td>  
+            </tr>`
+          }else{
+
+          
+          filteredColis.forEach(coli=>{
+
+            colisTable.innerHTML +=`
+              <tr id="${coli.track_number}">
+                  <td>
+                      <div class="ms-3">
+                        <h6 class="fs-4 fw-semibold mb-0">${coli.track_number}</h6>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.date_creation}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.telephone}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.client.nom_magasin ?? coli.utilisateur.nom}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.etat == 1 ? 'paye' : 'Non paye'}</p>
+                  </td>
+                  <td>
+                    <span class="badge bg-success-subtle text-success">${coli.status.nom_status ?? ''}</span>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.ville.nom_ville}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal">${coli.prix}</p>
+                  </td>
+                  
+                  <td>
+                    <div class="dropdown dropstart">
+                      <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ti ti-dots-vertical fs-6"></i>
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
+                            <i class="fs-4 ti ti-plus"></i>Add
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
+                            <i class="fs-4 ti ti-edit"></i>Edit
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
+                            <i class="fs-4 ti ti-trash"></i>Delete
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="checkbox" class="form-check-input primary coli-checked" id="">
+                    </td>
+                </tr>
+                `
+              
+          })
+        }
+  }
+
+
+
+  window.onload = function() {
+      fillListeLivreur();
+      fillColisTable();
   };
 
-  // enregisterBonDistr.addEventListener('click', ()=>{
+  function removeColis(event){
+    let bonDistributions = JSON.parse(localStorage.getItem('bon_distribution')) || [];
     
-  //   const colis = getSelectedColis();
-  //   const livreur = document.getElementById('livreur').value;
-  //   console.log(livreur)
+    const colisRef = event.target.closest('tr').id;
+
+    bonDistributions.forEach(bon=>{
+      bon.colis_ids = bon.colis_ids.filter(coli=> coli != colisRef);
+    })
     
-  //   fetch('{{route('bonDistr.store')}}',{
-  //     method : 'POST',
-  //     headers : {
-  //       'Content-Type': 'application/json',
-  //       'X-CSRF-TOKEN': '{{ csrf_token() }}'
-  //     },
-  //     body : JSON.stringify({
-  //       livreur_id : livreur,
-  //       colis_ids : colis
-  //     })
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     // Handle success response
-  //     console.log(data);
-  //     // Optionally, close the modal and reset the form
-  //     // $('#primary-header-modal').modal('hide');
-  //     // document.getElementById('distribution-form').reset();
-  //     const checkedColis = getSelectedColis();
-  //     checkedColis.forEach(coliId => {
-  //       const row = document.getElementById(coliId);
-  //       if (row) {
-  //         row.remove();
-  //       }
-  //     });
-  //   })
-  //   .catch(error => {
-  //     // Handle error response
-  //     console.error('Error:', error);
-  //   });
-  // });
+    bonDistributions = bonDistributions.filter(bon => bon.colis_ids.length > 0);
+    console.log(bonDistributions);
+    localStorage.setItem('bon_distribution',JSON.stringify(bonDistributions))
+    event.target.closest('tr').remove();
+    fillColisTable();
+    fillListeLivreur();
+    updateColisTableVisibility();
+  }
 
-  // Event listeners for individual checkboxes
-  // Event listeners for individual checkboxes
+  function updateColisTableVisibility() {
+    const colisLivreurTable = document.getElementById('colisLivreurTable');
+    const tableLivColis = Array.from(colisLivreurTable.querySelectorAll('tr'));
+    if (tableLivColis.length === 0) {
+        colisLivreurTable.parentElement.style.display = "none";
+    }
+}
 
+  function attachDeletEvent(){
+    document.querySelectorAll('.delete-colis').forEach(icon=>{
+        icon.addEventListener('click',removeColis)
+    })
+  }
+  document.getElementById('valider-btn').addEventListener('click',()=>{
+    let bonDistributions = JSON.parse(localStorage.getItem('bon_distribution'));
+    console.log(bonDistributions);
+    fetch('{{route('bonDistr.store')}}',{
+      method : 'POST',
+      headers : {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      body : JSON.stringify({
+        bonDistributions : bonDistributions
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      
+      localStorage.clear();
+  
+      window.location.reload();
+    })
 
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
 
 function showError(inputId, message) {
         const inputField = document.getElementById(inputId);
@@ -408,6 +466,15 @@ function showError(inputId, message) {
         errorSmall.textContent = message;
         inputField.parentElement.appendChild(errorSmall);
     }
+
+    function unvalidatedColis() {
+    const bonDistributions = JSON.parse(localStorage.getItem('bon_distribution')) || [];
+    
+    // Flatten all colis_ids into a single array
+    const allColisIds = bonDistributions.flatMap(bon => bon.colis_ids);
+    
+    return allColisIds;
+}
 </script>
 
   @endsection

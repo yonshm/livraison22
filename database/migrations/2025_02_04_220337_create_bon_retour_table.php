@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('recevoir')->default(0)->comment('0 - preparation de retour / 1 - recu par zone de ramassage / 2 - retour client prepare / 3 - recu par (client / stock)');
             $table->foreignId('id_coli')->constrained('colis');
-            $table->foreignId('bon_envoi')->nullable()->constrained('bon_envoi');
+            $table->foreignId('bon_envoi')->nullable()->constrained('bon_envois');
             $table->dateTime('date_debut');
             $table->dateTime('date_arrivee')->nullable();
             $table->timestamps();

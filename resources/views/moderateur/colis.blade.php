@@ -1,10 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('content')
     <div class="home">
-      @include('layouts.sideBar')
+      @include('layouts.sideBarModerateur')
     
     <div class="main">
-      @include('layouts.navBar')
+      @include('layouts.nav')
       <div class="mx-3">
       <div class="acc-filter">
         <div class="colis-filter">
@@ -134,7 +134,7 @@
                 <tr>
                   <td>
                       <div class="ms-3">
-                        <h6 class="fs-4 fw-semibold mb-0">{{$coli->ref}}</h6>
+                        <h6 class="fs-4 fw-semibold mb-0">{{$coli->track_number}}</h6>
                     </div>
                   </td>
                   <td>
@@ -144,7 +144,7 @@
                     <p class="mb-0 fw-normal">{{$coli->telephone}}</p>
                   </td>
                   <td>
-                    <p class="mb-0 fw-normal">{{$coli->client->nom_magasin ?? $coli->client->nom}}</p>
+                    <p class="mb-0 fw-normal">{{$coli->client->nom_magasin ?? $coli->utilisateur->nom}}</p>
                   </td>
                   <td>
                     <p class="mb-0 fw-normal">{{$coli->etat == 1 ? 'paye' : 'Non paye'}}</p>

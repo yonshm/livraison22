@@ -1,23 +1,25 @@
 <?php
 
+use App\Models\Produit;
+use App\Models\Bon_ramassage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ColiController;
+use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Bon_ramassageController;
 use App\Http\Controllers\VilleController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\GeneralConteroller;
-use App\Http\Controllers\UtilisateurController;
-use App\Http\Controllers\ZoneController;
-use App\Models\Produit;
 use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\DashboardClientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BonEnvoiController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\GeneralConteroller;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckClientMiddleware;
-use App\Models\Bon_ramassage;
+use App\Http\Controllers\UtilisateurController;
+use App\Http\Controllers\Bon_ramassageController;
+use App\Http\Controllers\BonDistributionController;
+use App\Http\Controllers\DashboardClientController;
 
 Route::middleware(['auth', CheckClientMiddleware::class])->group(function () {
     Route::prefix('client')->group(function () {
@@ -147,6 +149,20 @@ Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
 Route::middleware(['auth', CheckAdminMiddleware::class])->group(function () {
 
 });
+
+Route::get('/moderateur/colis', [ColiController::class, 'colisZone'])->name('moderateur.colis');
+Route::get('/bonDistribution', [BonDistributionController::class, 'index'])->name('bonDistr.index');
+Route::get('/bonDistribution/create', [BonDistributionController::class, 'create'])->name('bonDistr.create');
+Route::post('/bonDistribution/create', [BonDistributionController::class, 'store'])->name('bonDistr.store');
+Route::get('/bonEnvoi', [BonEnvoiController::class, 'index'])->name('bonEnvoi.index');
+Route::get('/bonEnvoi', [BonEnvoiController::class, 'index'])->name('bonEnvoi.index');
+Route::get('/bonEnvoi-scan', [BonEnvoiController::class, 'showScanBonEnvoi'])->name('bonEnvoi.Scan');
+Route::post('/update-status', [BonEnvoiController::class, 'updateStatus'])->name('update.status');
+Route::post('/moderateu/bon-envoi-scan/update-status', [BonEnvoiController::class, 'updateColiStatus'])->name('bonEnv.updateColiStatus');
+
+
+
+
 // End Route Mod ::::::::::::::::::::::::::::::::
 
 
